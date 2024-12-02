@@ -36,7 +36,7 @@
     <property name="spacing">
      <number>0</number>
     </property>
-    <item row="0" column="4">
+    <item row="0" column="2">
      <widget class="QStackedWidget" name="app_stacked_widget">
       <property name="currentIndex">
        <number>3</number>
@@ -412,6 +412,19 @@
         <property name="topMargin">
          <number>90</number>
         </property>
+        <item row="0" column="2">
+         <spacer name="horizontalSpacer_10">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>123</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
         <item row="0" column="0">
          <spacer name="horizontalSpacer_9">
           <property name="orientation">
@@ -430,19 +443,6 @@
           <property name="horizontalSpacing">
            <number>6</number>
           </property>
-          <item row="1" column="1">
-           <widget class="QPushButton" name="goto_cd_test_button">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>50</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Тесты 40</string>
-            </property>
-           </widget>
-          </item>
           <item row="2" column="1">
            <widget class="QPushButton" name="goto_cd_marathon_button">
             <property name="minimumSize">
@@ -486,7 +486,7 @@
            </widget>
           </item>
           <item row="4" column="1">
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="cd_tickets_back_button">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -498,20 +498,20 @@
             </property>
            </widget>
           </item>
+          <item row="1" column="1">
+           <widget class="QPushButton" name="goto_cd_test_button">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Тесты 40</string>
+            </property>
+           </widget>
+          </item>
          </layout>
-        </item>
-        <item row="0" column="2">
-         <spacer name="horizontalSpacer_10">
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>123</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
         <item row="1" column="1">
          <spacer name="verticalSpacer_6">

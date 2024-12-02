@@ -78,12 +78,12 @@ void MainWindow::on_tickets_back_button_released()
 
 void MainWindow::on_ab_tickets_back_button_released()
 {
-    ui->app_stacked_widget->setCurrentIndex(menu_page);
+    ui->app_stacked_widget->setCurrentIndex(tickets_page);
 }
 
 
-void MainWindow::on_pushButton_released()
+void MainWindow::on_cd_tickets_back_button_released()
 {
-    ui->app_stacked_widget->setCurrentIndex(menu_page);
+    ui->app_stacked_widget->setCurrentIndex(tickets_page);
 }
 

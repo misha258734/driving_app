@@ -48,7 +48,7 @@ private slots:
 
     void on_ab_tickets_back_button_released();
 
-    void on_pushButton_released();
+    void on_cd_tickets_back_button_released();
 
 private:
     Ui::MainWindow *ui;

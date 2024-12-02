@@ -39,7 +39,7 @@
     <item row="0" column="4">
      <widget class="QStackedWidget" name="app_stacked_widget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="menu_page">
        <layout class="QGridLayout" name="gridLayout_2">

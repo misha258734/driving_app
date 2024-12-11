@@ -31,23 +31,14 @@ public:
 private slots:
 
     void on_goto_tickets_button_released();
-
     void on_goto_timetable_button_released();
-
     void on_goto_registration_button_released();
-
     void on_goto_ab_tickets_button_clicked();
-
     void on_goto_cd_tickets_button_released();
-
     void on_registration_back_button_released();
-
     void on_timetable_back__button_released();
-
     void on_tickets_back_button_released();
-
     void on_ab_tickets_back_button_released();
-
     void on_cd_tickets_back_button_released();
 
 private:

@@ -10,10 +10,16 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    question.cpp \
+    textdb.cpp \
+    ticket.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    question.h \
+    textdb.h \
+    ticket.h
 
 FORMS += \
     mainwindow.ui

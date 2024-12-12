@@ -4,6 +4,7 @@
 #include "ticket.h"
 #include "question.h"
 #include <QFile>
+#include <QDir>
 
 class textDB
 {
@@ -12,13 +13,23 @@ public:
 
     QFile ticketFile;
     QTextStream out;
+    ticket tick;
+    QDir dir;
+
 
     int initializeFile(QString ticketPath, QIODevice::OpenMode mode);
     void closeFile();
 
-    int addTicket(int num, QVector<question> questions, int errorCount, QDate lastPass);
-    ticket getTicket();
-    int changeTicketQuest(QString quest, QVector<QString> anwsers, int rightAnwser, QString imagePath = "", QString comment = "");
+    int addTicketToFile();
+    void addQuestToFile();
+
+    int loadTicketFromFile(int ticketNum);
+
+    int removeTicket(int ticketNum);
+    int removeQuest(int questNum);
+    int removeAnswer(int anwserNum);
+
+
     question getTicketQuest();
 };
 

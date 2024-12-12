@@ -11,8 +11,8 @@ public:
 
     int number;
     QVector<question> questions;
-    int errorCounter;
-    QDate lastPass;
+    int errorCounter = -1;
+    QDate lastPass = QDate(0,0,0);
 };
 
 #endif // TICKET_H

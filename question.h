@@ -12,8 +12,8 @@ public:
 
     QString imagePath;
     QString quest;
-    QVector<QString> anwsers;
-    int rightAnwser;
+    QVector<QString> answer;
+    int rightAnswer;
     QString comment;
 };
 

@@ -2,6 +2,10 @@
 
 textDB::textDB() {
     out.setDevice(&ticketFile);
+
+    dir.setPath("src/tickets");
+    if (!dir.exists())
+        dir.mkpath(".");
 }
 
 int textDB::initializeFile(QString ticketPath, QIODevice::OpenMode mode)
@@ -17,24 +21,60 @@ int textDB::initializeFile(QString ticketPath, QIODevice::OpenMode mode)
 void textDB::closeFile()
 {
     ticketFile.close();
+    out.reset();
 }
 
-int textDB::addTicket(int num, QVector<question> questions, int errorCount, QDate lastPass = QDate(0, 0, 0))
+int textDB::addTicketToFile()
 {
-    out << (QString::number(num) + '\t' + QString::number(errorCount) + '\t' + lastPass.toString("dd.MM.yy") + '\n');
-    for(auto i : questions) {
-        out << i.quest + '\t' + QString::number(i.rightAnwser) + '\n' + i.imagePath + '\t' + i.comment + '\n';
-        for(auto j : i.anwsers)
+    QString filePath = QString("src/tickets/ticket-%1").arg(tick.number);
+    if(initializeFile(filePath, QIODevice::WriteOnly | QIODevice::Truncate))
+        return 1;
+
+    out << (QString::number(tick.number) + '\t' + QString::number(tick.errorCounter) + '\t' + tick.lastPass.toString("dd.MM.yy") + '\n');
+    for(question &i : tick.questions) {
+        out << i.quest + '\t' + QString::number(i.rightAnswer) + '\t' + i.imagePath + '\t' + i.comment + '\n';
+        for(QString &j : i.answer)
             out << '\t' + j + '\n';
+        out << "###\n";
     }
+    closeFile();
+
+    return 0;
 }
 
-ticket textDB::getTicket()
+int textDB::loadTicketFromFile(int ticketNum)
 {
+    QString textLine;
+    QStringList splitLine;
+    question *quest;
 
-}
+    if(initializeFile(QString("src/tickets/ticket-%1").arg(ticketNum), QIODevice::ReadOnly))
+        return 1;
 
-int changeTicketQuest(QString quest, QVector<QString> anwsers, int rightAnwser, QString imagePath = "", QString comment = "")
-{
+    tick.questions.clear();
 
+    textLine = out.readLine();
+
+    splitLine = textLine.split('\t');
+
+    tick.number = splitLine[0].toInt();
+    tick.errorCounter = splitLine[1].toInt();
+    tick.lastPass = QDate::fromString(splitLine[1], "dd.MM.yy");
+    while(!out.atEnd()) {
+        quest = new question;
+
+        textLine = out.readLine();
+
+        splitLine = textLine.split('\t');
+        quest->quest = splitLine[0];
+        quest->rightAnswer = splitLine[1].toInt();
+        quest->imagePath = splitLine[2];
+        quest->comment = splitLine[3];
+        while((textLine = out.readLine()) != "###") {
+            quest->answer.push_back(textLine.remove(0, 1));
+        }
+        tick.questions.push_back(*quest);
+    }
+    closeFile();
+    return 0;
 }

@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "textdb.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -17,9 +18,11 @@ class MainWindow : public QMainWindow
         menu_page = 0,
         tickets_page = 1,
         ab_tickets_page = 2,
-        cd_tickets_page = 3,
-        timetable_page = 4,
-        registration_page = 5
+        edit_ab_tickets_page = 3,
+        cd_tickets_page = 4,
+        timetable_page = 5,
+        registration_page = 6,
+
     };
 
 public:
@@ -27,6 +30,11 @@ public:
     ~MainWindow();
 
     int but_num = 1;
+    textDB textDataBase;
+
+    void testAdd();
+    void testLoad();
+    void addTicketsButtons();
 
 private slots:
 
@@ -40,6 +48,8 @@ private slots:
     void on_tickets_back_button_released();
     void on_ab_tickets_back_button_released();
     void on_cd_tickets_back_button_released();
+
+    void on_goto_ab_tickets_edit_button_released();
 
 private:
     Ui::MainWindow *ui;

@@ -3,9 +3,22 @@
 textDB::textDB() {
     out.setDevice(&ticketFile);
 
+    dir.setPath("src/images");
+    if (!dir.exists())
+        dir.mkpath(".");
     dir.setPath("src/tickets");
     if (!dir.exists())
         dir.mkpath(".");
+
+    countTicketFiles();
+}
+
+void textDB::countTicketFiles()
+{
+    ticketCount = 0;
+    for(int i = 0; i < dir.count(); i++)
+        if(dir[i].startsWith("ticket-"))
+            ticketCount++;
 }
 
 int textDB::initializeFile(QString ticketPath, QIODevice::OpenMode mode)
@@ -14,7 +27,7 @@ int textDB::initializeFile(QString ticketPath, QIODevice::OpenMode mode)
     ticketFile.setFileName(ticketPath);
     if (!ticketFile.open(mode))
         return 1;
-
+    countTicketFiles();
 
     return 0;
 }
@@ -30,7 +43,7 @@ int textDB::addTicketToFile()
     if(initializeFile(filePath, QIODevice::WriteOnly | QIODevice::Truncate))
         return 1;
 
-    out << (QString::number(tick.number) + '\t' + QString::number(tick.errorCounter) + '\t' + tick.lastPass.toString("dd.MM.yy") + '\n');
+    out << QString::number(tick.errorCounter) + '\t' + tick.lastPass.toString("dd.MM.yy") + '\n';
     for(question &i : tick.questions) {
         out << i.quest + '\t' + QString::number(i.rightAnswer) + '\t' + i.imagePath + '\t' + i.comment + '\n';
         for(QString &j : i.answer)
@@ -57,7 +70,6 @@ int textDB::loadTicketFromFile(int ticketNum)
 
     splitLine = textLine.split('\t');
 
-    tick.number = splitLine[0].toInt();
     tick.errorCounter = splitLine[1].toInt();
     tick.lastPass = QDate::fromString(splitLine[1], "dd.MM.yy");
     while(!out.atEnd()) {
@@ -76,5 +88,12 @@ int textDB::loadTicketFromFile(int ticketNum)
         tick.questions.push_back(*quest);
     }
     closeFile();
+    return 0;
+}
+
+int textDB::removeTicketFile(int ticketNum)
+{
+    if(!dir.remove(QString("ticket-%1").arg(ticketNum)))
+        return 1;
     return 0;
 }

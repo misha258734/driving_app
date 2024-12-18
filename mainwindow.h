@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QPushButton>
+#include <QFileDialog>
 #include "textdb.h"
 
 QT_BEGIN_NAMESPACE
@@ -14,14 +16,25 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+    int current_quest;
+    textDB textDataBase;
+    QVector<QPushButton*> tickets_btns;
+    QVector<QPushButton*> questions_btns;
+    QPixmap imgPix;
+    QString currentImagePath;
+
+
+
     enum app_pages {
         menu_page = 0,
         tickets_page = 1,
         ab_tickets_page = 2,
-        edit_ab_tickets_page = 3,
-        cd_tickets_page = 4,
-        timetable_page = 5,
-        registration_page = 6,
+        edit_tickets_page = 3,
+        edit_quests_page = 4,
+        edit_quest_page = 5,
+        cd_tickets_page = 6,
+        timetable_page = 7,
+        registration_page = 8,
 
     };
 
@@ -29,29 +42,41 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    int but_num = 1;
-    textDB textDataBase;
-
     void testAdd();
     void testLoad();
     void addTicketsButtons();
+    void loadTicket(int ticketNum);
+    void loadQuestion(int questNum);
+    void removeTicketsButtons();
+    void removeQuestionsButtons();
 
 private slots:
 
     void on_goto_tickets_button_released();
     void on_goto_timetable_button_released();
     void on_goto_registration_button_released();
-    void on_goto_ab_tickets_button_clicked();
+    void on_goto_ab_tickets_button_released();
     void on_goto_cd_tickets_button_released();
     void on_registration_back_button_released();
     void on_timetable_back__button_released();
     void on_tickets_back_button_released();
     void on_ab_tickets_back_button_released();
     void on_cd_tickets_back_button_released();
-
     void on_goto_ab_tickets_edit_button_released();
+    void on_edit_quests_back_button_released();
+    void on_edit_tickets_back_button_released();
+
+
+
+    void on_edit_quest_back_button_released();
+
+    void on_quest_image_button_clicked();
+
+    void on_edit_quest_save_button_clicked();
 
 private:
+    void resizeEvent(QResizeEvent*);
+
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H

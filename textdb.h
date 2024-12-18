@@ -15,9 +15,11 @@ public:
     QTextStream out;
     ticket tick;
     QDir dir;
+    int ticketCount = 0;
 
 
     int initializeFile(QString ticketPath, QIODevice::OpenMode mode);
+    void countTicketFiles();
     void closeFile();
 
     int addTicketToFile();
@@ -25,7 +27,7 @@ public:
 
     int loadTicketFromFile(int ticketNum);
 
-    int removeTicket(int ticketNum);
+    int removeTicketFile(int ticketNum);
     int removeQuest(int questNum);
     int removeAnswer(int anwserNum);
 

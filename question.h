@@ -5,9 +5,8 @@
 #include <QVector>
 
 
-class question
+struct question
 {
-public:
     question();
 
     QString imagePath;

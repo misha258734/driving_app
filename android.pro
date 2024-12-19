@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    mainwindow_slots.cpp \
     question.cpp \
     textdb.cpp \
     ticket.cpp
@@ -30,4 +31,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    tickets.qrc
+    style.qrc

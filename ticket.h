@@ -4,9 +4,8 @@
 #include "question.h"
 #include <QDate>
 
-class ticket
+struct ticket
 {
-public:
     ticket();
 
     int number;

@@ -52,27 +52,28 @@ public:
 
 private slots:
 
-    void on_goto_tickets_button_released();
-    void on_goto_timetable_button_released();
-    void on_goto_registration_button_released();
-    void on_goto_ab_tickets_button_released();
-    void on_goto_cd_tickets_button_released();
-    void on_registration_back_button_released();
-    void on_timetable_back__button_released();
-    void on_tickets_back_button_released();
-    void on_ab_tickets_back_button_released();
-    void on_cd_tickets_back_button_released();
-    void on_goto_ab_tickets_edit_button_released();
-    void on_edit_quests_back_button_released();
-    void on_edit_tickets_back_button_released();
-
-
-
-    void on_edit_quest_back_button_released();
-
+    void on_goto_tickets_button_clicked();
+    void on_goto_timetable_button_clicked();
+    void on_goto_registration_button_clicked();
+    void on_goto_ab_tickets_button_clicked();
+    void on_goto_cd_tickets_button_clicked();
+    void on_registration_back_button_clicked();
+    void on_timetable_back__button_clicked();
+    void on_tickets_back_button_clicked();
+    void on_ab_tickets_back_button_clicked();
+    void on_cd_tickets_back_button_clicked();
+    void on_goto_ab_tickets_edit_button_clicked();
+    void on_edit_quests_back_button_clicked();
+    void on_edit_tickets_back_button_clicked();
+    void on_edit_quest_back_button_clicked();
     void on_quest_image_button_clicked();
-
     void on_edit_quest_save_button_clicked();
+    void on_add_answer_button_clicked();
+
+
+    void on_add_question_button_clicked();
+
+    void on_add_ticket_button_clicked();
 
 private:
     void resizeEvent(QResizeEvent*);

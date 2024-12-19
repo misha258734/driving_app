@@ -6,31 +6,29 @@
 #include <QFile>
 #include <QDir>
 
-class textDB
+struct textDB
 {
-public:
     textDB();
 
     QFile ticketFile;
     QTextStream out;
     ticket tick;
-    QDir dir;
+    QDir ticketDir, imageDir;
     int ticketCount = 0;
 
 
     int initializeFile(QString ticketPath, QIODevice::OpenMode mode);
     void countTicketFiles();
+
     void closeFile();
 
     int addTicketToFile();
-    void addQuestToFile();
+    void addImages();
 
     int loadTicketFromFile(int ticketNum);
 
     int removeTicketFile(int ticketNum);
-    int removeQuest(int questNum);
-    int removeAnswer(int anwserNum);
-
+    int removeImageFile(int imageNum);
 
     question getTicketQuest();
 };

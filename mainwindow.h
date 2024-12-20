@@ -75,6 +75,10 @@ private slots:
 
     void on_add_ticket_button_clicked();
 
+    void on_answers_table_itemSelectionChanged();
+
+    void on_answers_table_cellChanged(int row, int column);
+
 private:
     void resizeEvent(QResizeEvent*);
 

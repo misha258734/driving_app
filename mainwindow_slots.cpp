@@ -33,6 +33,8 @@ void MainWindow::on_edit_quest_back_button_clicked() {          // edit quest ->
 
     ui->image_label->setMinimumHeight(0);
     ui->image_label->setText("Нет изображения");
+
+    ui->answers_table->clear();
 }
 
 void MainWindow::on_add_ticket_button_clicked()
@@ -94,17 +96,37 @@ void MainWindow::on_edit_quest_save_button_clicked()             // saves chages
     textDataBase.tick.questions[current_quest].imagePath = currentImagePath;
     int rows = ui->answers_table->rowCount();
     textDataBase.tick.questions[current_quest].answer.clear();
+    textDataBase.tick.questions[current_quest].rightAnswer = ui->answers_table->selectionModel()->currentIndex().row()+1;
     for(int i = 0; i < rows; i++) {
-        QString answerText = ui->answers_table->item(i,0)->text();
-        textDataBase.tick.questions[current_quest].answer.push_back(answerText);
+        bool itemNotEmpty = ui->answers_table->item(i, 0);
+        if(itemNotEmpty)
+        {
+            QString answerText = ui->answers_table->item(i,0)->text();
+            textDataBase.tick.questions[current_quest].answer.push_back(answerText);
+        }
     }
+
+    on_edit_quest_back_button_clicked();
 
     textDataBase.addTicketToFile();
 }
 
-void MainWindow::on_add_answer_button_clicked()
+void MainWindow::on_add_answer_button_clicked()                  // on selection cell in answers table
 {
     ui->answers_table->insertRow(ui->answers_table->rowCount());
 }
 
+void MainWindow::on_answers_table_itemSelectionChanged()
+{
+    bool itemSelected = ui->answers_table->selectionModel()->selectedIndexes().count() == 1;
+    int selectedCell = ui->answers_table->selectionModel()->currentIndex().row();
+    bool itemNotEmpty = ui->answers_table->item(selectedCell, 0);
+    if(itemNotEmpty)
+        itemNotEmpty = ui->answers_table->item(selectedCell, 0)->text() != "";
+    ui->edit_quest_save_button->setEnabled(itemSelected & itemNotEmpty);
+}
 
+void MainWindow::on_answers_table_cellChanged(int row, int column)
+{
+    on_answers_table_itemSelectionChanged();
+}

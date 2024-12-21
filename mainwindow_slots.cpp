@@ -1,30 +1,31 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-void MainWindow::on_goto_tickets_button_clicked() {ui->app_stacked_widget->setCurrentIndex(tickets_page);}             // menu -> tickets
-void MainWindow::on_goto_timetable_button_clicked() {ui->app_stacked_widget->setCurrentIndex(timetable_page);}         // menu -> timetable
-void MainWindow::on_goto_registration_button_clicked() {ui->app_stacked_widget->setCurrentIndex(registration_page);}   // menu -> registration
-void MainWindow::on_goto_ab_tickets_button_clicked() {ui->app_stacked_widget->setCurrentIndex(ab_tickets_page);}       // tickets -> AB tickets
-void MainWindow::on_goto_cd_tickets_button_clicked() {ui->app_stacked_widget->setCurrentIndex(cd_tickets_page);}       // tickets -> CD tickets
-void MainWindow::on_registration_back_button_clicked() {ui->app_stacked_widget->setCurrentIndex(menu_page);}           // registration -> BACK menu
-void MainWindow::on_timetable_back__button_clicked() {ui->app_stacked_widget->setCurrentIndex(menu_page);}             // timetable -> BACK menu
-void MainWindow::on_tickets_back_button_clicked() {ui->app_stacked_widget->setCurrentIndex(menu_page);}                // tickets -> BACK menu
-void MainWindow::on_ab_tickets_back_button_clicked() {ui->app_stacked_widget->setCurrentIndex(tickets_page);}          // AB tickets -> BACK tickets
-void MainWindow::on_cd_tickets_back_button_clicked() {ui->app_stacked_widget->setCurrentIndex(tickets_page);}          // CD tickets -> BACK tickets
+
+void MainWindow::on_goto_tickets_button_clicked() {changePage(tickets_page);}             // menu -> tickets
+void MainWindow::on_goto_timetable_button_clicked() {changePage(timetable_page);}         // menu -> timetable
+void MainWindow::on_goto_registration_button_clicked() {changePage(registration_page);}   // menu -> registration
+void MainWindow::on_goto_ab_tickets_button_clicked() {changePage(ab_tickets_page);}       // tickets -> AB tickets
+void MainWindow::on_goto_cd_tickets_button_clicked() {changePage(cd_tickets_page);}       // tickets -> CD tickets
+void MainWindow::on_registration_back_button_clicked() {changePage(menu_page);}           // registration -> BACK menu
+void MainWindow::on_timetable_back__button_clicked() {changePage(menu_page);}             // timetable -> BACK menu
+void MainWindow::on_tickets_back_button_clicked() {changePage(menu_page);}                // tickets -> BACK menu
+void MainWindow::on_ab_tickets_back_button_clicked() {changePage(tickets_page);}          // AB tickets -> BACK tickets
+void MainWindow::on_cd_tickets_back_button_clicked() {changePage(tickets_page);}          // CD tickets -> BACK tickets
 void MainWindow::on_goto_ab_tickets_edit_button_clicked() {     // AB tickets -> edit tickets
     addTicketsButtons();
-    ui->app_stacked_widget->setCurrentIndex(edit_tickets_page);
+    changePage(edit_tickets_page);
 }
 void MainWindow::on_edit_quests_back_button_clicked() {         // edit quests -> BACK edit tickets
-    ui->app_stacked_widget->setCurrentIndex(edit_tickets_page);
-    removeQuestionsButtons();
+    changePage(edit_tickets_page);
+    clearLayout(ui->quests_buttons_scroll_area->layout());
 }
 void MainWindow::on_edit_tickets_back_button_clicked() {        // edit tickets -> BACK AB tickets
-    ui->app_stacked_widget->setCurrentIndex(ab_tickets_page);
-    removeTicketsButtons();
+    changePage(ab_tickets_page);
+    clearLayout(ui->tickets_buttons_scroll_area->layout());
 }
 void MainWindow::on_edit_quest_back_button_clicked() {          // edit quest -> BACK edit quests
-    ui->app_stacked_widget->setCurrentIndex(edit_quests_page);
+    changePage(edit_quests_page);
 
     ui->question_text_textEdit->setText("Текст вопроса...");
     ui->comment_text_textEdit->setText("Текст комментария...");
@@ -46,11 +47,21 @@ void MainWindow::on_add_ticket_button_clicked()
 
     textDataBase.addTicketToFile();
 
-    QPushButton *btn = new QPushButton("Билет " + QString::number(textDataBase.tick.number));
-    btn->setMinimumHeight(50);
-    QObject::connect(btn, &QPushButton::clicked,this,[=] {loadTicket(textDataBase.tick.number);});
-    tickets_btns.push_back(btn);
-    ui->tickets_buttons_scroll_area->layout()->addWidget(btn);
+    QHBoxLayout* hBox = new QHBoxLayout;
+
+    QPushButton *addBtn = new QPushButton("Билет " + QString::number(textDataBase.tick.number));
+    addBtn->setMinimumHeight(50);
+    QObject::connect(addBtn, &QPushButton::clicked,this,[=] {loadTicket(textDataBase.tick.number);});
+
+    QPushButton *removeBtn = new QPushButton("-");
+    removeBtn->setMinimumHeight(50);
+    removeBtn->setMaximumWidth(50);
+    QObject::connect(removeBtn, &QPushButton::clicked,this,[=] {removeTicket(textDataBase.tick.number);});
+
+    hBox->addWidget(addBtn);
+    hBox->addWidget(removeBtn);
+
+    ui->tickets_buttons_scroll_area->addLayout(hBox);
 }
 
 void MainWindow::on_add_question_button_clicked()
@@ -65,13 +76,21 @@ void MainWindow::on_add_question_button_clicked()
 
     textDataBase.addTicketToFile();
 
-    int questNum = textDataBase.tick.questions.count();
+    QHBoxLayout* hBox = new QHBoxLayout;
 
-    QPushButton *btn = new QPushButton("Вопрос " + QString::number(questNum));
-    btn->setMinimumHeight(50);
-    QObject::connect(btn, &QPushButton::clicked, this, [=]{loadQuestion(questNum-1);});
-    questions_btns.push_back(btn);
-    ui->quests_buttons_scroll_area->layout()->addWidget(btn);
+    int questNum = textDataBase.tick.questions.count();
+    QPushButton *addBtn = new QPushButton("Вопрос " + QString::number(questNum));
+    addBtn->setMinimumHeight(50);
+    QObject::connect(addBtn, &QPushButton::clicked, this, [=]{loadQuestion(questNum-1);});
+
+    QPushButton *removeBtn = new QPushButton("-");
+    removeBtn->setMinimumHeight(50);
+    removeBtn->setMaximumWidth(50);
+    QObject::connect(removeBtn, &QPushButton::clicked, this, [=]{removeQuest(questNum-1, textDataBase.tick.number);});
+
+    hBox->addWidget(addBtn);
+    hBox->addWidget(removeBtn);
+    ui->quests_buttons_scroll_area->addLayout(hBox);
 
 }
 
@@ -116,6 +135,12 @@ void MainWindow::on_add_answer_button_clicked()                  // on selection
     ui->answers_table->insertRow(ui->answers_table->rowCount());
 }
 
+void MainWindow::on_remove_answer_button_clicked()
+{
+    int selectedCell = ui->answers_table->selectionModel()->currentIndex().row();
+    ui->answers_table->removeRow(selectedCell);
+}
+
 void MainWindow::on_answers_table_itemSelectionChanged()
 {
     bool itemSelected = ui->answers_table->selectionModel()->selectedIndexes().count() == 1;
@@ -124,9 +149,15 @@ void MainWindow::on_answers_table_itemSelectionChanged()
     if(itemNotEmpty)
         itemNotEmpty = ui->answers_table->item(selectedCell, 0)->text() != "";
     ui->edit_quest_save_button->setEnabled(itemSelected & itemNotEmpty);
+    ui->remove_answer_button->setEnabled(itemSelected);
 }
 
-void MainWindow::on_answers_table_cellChanged(int row, int column)
+void MainWindow::on_answers_table_cellChanged()
 {
+    ui->answers_table->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+
     on_answers_table_itemSelectionChanged();
 }
+
+
+

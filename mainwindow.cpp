@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
 
-    ui->app_stacked_widget->setCurrentIndex(menu_page);
+    changePage(menu_page);
 
     ui->goto_themes_button->setDisabled(true);
     ui->goto_traffic_rules_button->setDisabled(true);
@@ -26,30 +26,68 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::changePage(int pageNum)
+{
+    ui->app_stacked_widget->setCurrentIndex(pageNum);
+}
+
+void MainWindow::clearLayout(QLayout* layout, bool deleteWidgets)
+{
+    while (QLayoutItem* item = layout->takeAt(0))
+    {
+        if (deleteWidgets)
+        {
+            if (QWidget* widget = item->widget())
+                widget->deleteLater();
+        }
+        if (QLayout* childLayout = item->layout())
+            clearLayout(childLayout, deleteWidgets);
+        delete item;
+    }
+}
+
 void MainWindow::addTicketsButtons()                        // On edit ticket button
 {
     for(int i = 1; i <= textDataBase.ticketCount; i++) {
-        QPushButton *btn = new QPushButton("Билет " + QString::number(i));
-        btn->setMinimumHeight(50);
-        QObject::connect(btn, &QPushButton::clicked,this,[=] {loadTicket(i);});
-        tickets_btns.push_back(btn);
-        ui->tickets_buttons_scroll_area->layout()->addWidget(btn);
+        QHBoxLayout* hBox = new QHBoxLayout;
+
+        QPushButton *addBtn = new QPushButton("Билет " + QString::number(i));
+        addBtn->setMinimumHeight(50);
+        QObject::connect(addBtn, &QPushButton::clicked,this,[=] {loadTicket(i);});
+
+        QPushButton *removeBtn = new QPushButton("-");
+        removeBtn->setMinimumHeight(50);
+        removeBtn->setMaximumWidth(50);
+        QObject::connect(removeBtn, &QPushButton::clicked,this,[=] {removeTicket(i);});
+
+        hBox->addWidget(addBtn);
+        hBox->addWidget(removeBtn);
+        ui->tickets_buttons_scroll_area->addLayout(hBox);
     }
+
 }
 void MainWindow::loadTicket(int ticketNum)                  // On ticket button
 {
     textDataBase.loadTicketFromFile(ticketNum);
 
-    qDebug() << ticketNum << "ticket loaded\n";
-
     for(int i = 0; i < textDataBase.tick.questions.count(); i++) {
-        QPushButton *btn = new QPushButton("Вопрос " + QString::number(i+1));
-        btn->setMinimumHeight(50);
-        QObject::connect(btn, &QPushButton::clicked, this, [=]{loadQuestion(i);});
-        questions_btns.push_back(btn);
-        ui->quests_buttons_scroll_area->layout()->addWidget(btn);
+        QHBoxLayout* hBox = new QHBoxLayout;
+
+        QPushButton *addBtn = new QPushButton("Вопрос " + QString::number(i+1));
+        addBtn->setMinimumHeight(50);
+        QObject::connect(addBtn, &QPushButton::clicked, this, [=]{loadQuestion(i);});
+
+        QPushButton *removeBtn = new QPushButton("-");
+        removeBtn->setMinimumHeight(50);
+        removeBtn->setMaximumWidth(50);
+        QObject::connect(removeBtn, &QPushButton::clicked, this, [=]{removeQuest(i, ticketNum);});
+
+        hBox->addWidget(addBtn);
+        hBox->addWidget(removeBtn);
+        ui->quests_buttons_scroll_area->addLayout(hBox);
     }
-    ui->app_stacked_widget->setCurrentIndex(edit_quests_page);
+
+    changePage(edit_quests_page);
 }
 void MainWindow::loadQuestion(int questNum)                 // On edit question button
 {
@@ -64,13 +102,16 @@ void MainWindow::loadQuestion(int questNum)                 // On edit question 
 
     ui->answers_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->answers_table->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+    ui->answers_table->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     int answers = textDataBase.tick.questions[questNum].answer.size();
     for(int i = 0; i < answers; i++) {
         ui->answers_table->insertRow(ui->answers_table->rowCount());
         QString text = textDataBase.tick.questions[questNum].answer[i];
         ui->answers_table->setItem(i, 0, new QTableWidgetItem(text));
     }
-    ui->app_stacked_widget->setCurrentIndex(edit_quest_page);
+    changePage(edit_quest_page);
+
+    ui->answers_table->resizeRowsToContents();
 
     imgPix.load(textDataBase.tick.questions[questNum].imagePath);
     if(!imgPix.isNull()) {
@@ -79,24 +120,24 @@ void MainWindow::loadQuestion(int questNum)                 // On edit question 
     }
 }
 
-void MainWindow::removeTicketsButtons()                     // On edit ticketS back button
+void MainWindow::removeTicket(int ticketNum)
 {
-    for(auto &i : tickets_btns) {
-        QObject::disconnect(i);
-        ui->scroll_area_2->layout()->removeWidget(i);
-        delete i;
-    }
-    tickets_btns.clear();
+    if(textDataBase.removeTicketFile(ticketNum)) return;
+
+    clearLayout(ui->tickets_buttons_scroll_area->layout());
+
+    addTicketsButtons();
 }
 
-void MainWindow::removeQuestionsButtons()                   // On edit questionsS back button
+void MainWindow::removeQuest(int questNum, int ticketNum)
 {
-    for(auto &i : questions_btns) {
-        QObject::disconnect(i);
-        ui->scroll_area->layout()->removeWidget(i);
-        delete i;
-    }
-    questions_btns.clear();
+    textDataBase.tick.questions.remove(questNum);
+
+    clearLayout(ui->quests_buttons_scroll_area->layout());
+
+    textDataBase.addTicketToFile();
+
+    loadTicket(ticketNum);
 }
 
 void MainWindow::resizeEvent(QResizeEvent*)
@@ -105,7 +146,4 @@ void MainWindow::resizeEvent(QResizeEvent*)
     if(!imgPix.isNull())
         ui->image_label->setPixmap(imgPix.scaled( ui->image_label->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }
-
-
-
 

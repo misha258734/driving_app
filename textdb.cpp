@@ -130,6 +130,12 @@ int textDB::removeTicketFile(int ticketNum)
 {
     if(!ticketDir.remove(QString("ticket-%1").arg(ticketNum)))
         return 1;
+    for(int i = ticketNum; i < ticketCount; i++)
+    {
+        if(!ticketDir.rename(QString("ticket-%1").arg(i+1), QString("ticket-%1").arg(i)))
+            return 2;
+    }
+    countTicketFiles();
     return 0;
 }
 

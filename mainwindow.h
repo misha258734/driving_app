@@ -18,8 +18,6 @@ class MainWindow : public QMainWindow
 
     int current_quest;
     textDB textDataBase;
-    QVector<QPushButton*> tickets_btns;
-    QVector<QPushButton*> questions_btns;
     QPixmap imgPix;
     QString currentImagePath;
 
@@ -35,20 +33,21 @@ class MainWindow : public QMainWindow
         cd_tickets_page = 6,
         timetable_page = 7,
         registration_page = 8,
-
     };
 
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void changePage(int pageNum);
+    void clearLayout(QLayout* layout, bool deleteWidgets = true);
     void testAdd();
     void testLoad();
     void addTicketsButtons();
     void loadTicket(int ticketNum);
     void loadQuestion(int questNum);
-    void removeTicketsButtons();
-    void removeQuestionsButtons();
+    void removeTicket(int ticketNum);
+    void removeQuest(int questNum, int ticketNum);
 
 private slots:
 
@@ -77,7 +76,9 @@ private slots:
 
     void on_answers_table_itemSelectionChanged();
 
-    void on_answers_table_cellChanged(int row, int column);
+    void on_answers_table_cellChanged();
+
+    void on_remove_answer_button_clicked();
 
 private:
     void resizeEvent(QResizeEvent*);

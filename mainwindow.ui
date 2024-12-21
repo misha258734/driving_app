@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>240</width>
-    <height>444</height>
+    <width>313</width>
+    <height>675</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -389,14 +389,7 @@ QPushButton {
       </widget>
       <widget class="QWidget" name="edit_tickets_back">
        <layout class="QGridLayout" name="gridLayout_12">
-        <item row="0" column="0">
-         <widget class="QLabel" name="edit_tickets_title_label">
-          <property name="text">
-           <string>Изменить билеты</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0" colspan="2">
+        <item row="0" column="1" colspan="2">
          <widget class="QScrollArea" name="scrollArea">
           <property name="widgetResizable">
            <bool>true</bool>
@@ -406,13 +399,17 @@ QPushButton {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>224</width>
-             <height>381</height>
+             <width>119</width>
+             <height>106</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout">
             <item>
-             <layout class="QVBoxLayout" name="tickets_buttons_scroll_area"/>
+             <layout class="QVBoxLayout" name="tickets_buttons_scroll_area">
+              <property name="bottomMargin">
+               <number>25</number>
+              </property>
+             </layout>
             </item>
             <item>
              <widget class="QPushButton" name="add_ticket_button">
@@ -444,7 +441,7 @@ QPushButton {
           </widget>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item row="1" column="1">
          <widget class="QPushButton" name="edit_tickets_back_button">
           <property name="text">
            <string>Назад</string>
@@ -455,14 +452,7 @@ QPushButton {
       </widget>
       <widget class="QWidget" name="edit_quests_page">
        <layout class="QGridLayout" name="gridLayout_14">
-        <item row="3" column="0">
-         <widget class="QPushButton" name="edit_quests_back_button">
-          <property name="text">
-           <string>Назад</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0" colspan="2">
+        <item row="0" column="0" colspan="2">
          <widget class="QScrollArea" name="scrollArea_3">
           <property name="widgetResizable">
            <bool>true</bool>
@@ -472,13 +462,17 @@ QPushButton {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>224</width>
-             <height>381</height>
+             <width>293</width>
+             <height>624</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_4">
             <item>
-             <layout class="QVBoxLayout" name="quests_buttons_scroll_area"/>
+             <layout class="QVBoxLayout" name="quests_buttons_scroll_area">
+              <property name="bottomMargin">
+               <number>25</number>
+              </property>
+             </layout>
             </item>
             <item>
              <widget class="QPushButton" name="add_question_button">
@@ -510,10 +504,10 @@ QPushButton {
           </widget>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="edit_quests_title_label">
+        <item row="2" column="0">
+         <widget class="QPushButton" name="edit_quests_back_button">
           <property name="text">
-           <string>Изменить вопросы</string>
+           <string>Назад</string>
           </property>
          </widget>
         </item>
@@ -521,14 +515,20 @@ QPushButton {
       </widget>
       <widget class="QWidget" name="edit_quest_page">
        <layout class="QGridLayout" name="gridLayout_13">
-        <item row="1" column="0">
-         <widget class="QPushButton" name="edit_quest_back_button">
+        <item row="1" column="3">
+         <widget class="QPushButton" name="edit_quest_save_button">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="text">
-           <string>Назад</string>
+           <string>Сохранить</string>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
-        <item row="0" column="0" colspan="2">
+        <item row="0" column="2" colspan="2">
          <widget class="QScrollArea" name="scrollArea_4">
           <property name="sizeAdjustPolicy">
            <enum>QAbstractScrollArea::SizeAdjustPolicy::AdjustIgnored</enum>
@@ -541,8 +541,8 @@ QPushButton {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>224</width>
-             <height>401</height>
+             <width>293</width>
+             <height>624</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -605,8 +605,8 @@ p, li { white-space: pre-wrap; }
 hr { height: 1px; border-width: 0; }
 li.unchecked::marker { content: &quot;\2610&quot;; }
 li.checked::marker { content: &quot;\2612&quot;; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Sans Serif';&quot;&gt;Текст вопроса...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Текст вопроса...&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
              </widget>
             </item>
@@ -640,26 +640,70 @@ li.checked::marker { content: &quot;\2612&quot;; }
                <bool>false</bool>
               </attribute>
               <attribute name="horizontalHeaderCascadingSectionResizes">
-               <bool>true</bool>
+               <bool>false</bool>
               </attribute>
               <attribute name="horizontalHeaderDefaultSectionSize">
                <number>38</number>
+              </attribute>
+              <attribute name="horizontalHeaderHighlightSections">
+               <bool>false</bool>
               </attribute>
               <attribute name="verticalHeaderVisible">
                <bool>false</bool>
               </attribute>
               <attribute name="verticalHeaderCascadingSectionResizes">
-               <bool>false</bool>
+               <bool>true</bool>
+              </attribute>
+              <attribute name="verticalHeaderMinimumSectionSize">
+               <number>40</number>
+              </attribute>
+              <attribute name="verticalHeaderStretchLastSection">
+               <bool>true</bool>
               </attribute>
               <column/>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="add_answer_button">
-              <property name="text">
-               <string>Добавить ответ</string>
-              </property>
-             </widget>
+             <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <item>
+               <widget class="QPushButton" name="add_answer_button">
+                <property name="minimumSize">
+                 <size>
+                  <width>40</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>40</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>+</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="remove_answer_button">
+                <property name="minimumSize">
+                 <size>
+                  <width>40</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>40</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>-</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
             <item>
              <widget class="QTextEdit" name="comment_text_textEdit">
@@ -679,9 +723,9 @@ p, li { white-space: pre-wrap; }
 hr { height: 1px; border-width: 0; }
 li.unchecked::marker { content: &quot;\2610&quot;; }
 li.checked::marker { content: &quot;\2612&quot;; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Sans Serif';&quot;&gt;Текст комментария...&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif';&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Текст комментария...&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
              </widget>
             </item>
@@ -702,16 +746,10 @@ li.checked::marker { content: &quot;\2612&quot;; }
           </widget>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="QPushButton" name="edit_quest_save_button">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
+        <item row="1" column="2">
+         <widget class="QPushButton" name="edit_quest_back_button">
           <property name="text">
-           <string>Сохранить</string>
-          </property>
-          <property name="flat">
-           <bool>false</bool>
+           <string>Назад</string>
           </property>
          </widget>
         </item>

@@ -80,7 +80,7 @@ void MainWindow::loadTicket(int ticketNum)                  // On ticket button
         QPushButton *removeBtn = new QPushButton("-");
         removeBtn->setMinimumHeight(50);
         removeBtn->setMaximumWidth(50);
-        QObject::connect(removeBtn, &QPushButton::clicked, this, [=]{removeQuest(i, ticketNum);});
+        QObject::connect(removeBtn, &QPushButton::clicked, this, [=]{removeQuest(i);});
 
         hBox->addWidget(addBtn);
         hBox->addWidget(removeBtn);
@@ -113,11 +113,13 @@ void MainWindow::loadQuestion(int questNum)                 // On edit question 
 
     ui->answers_table->resizeRowsToContents();
 
-    imgPix.load(textDataBase.tick.questions[questNum].imagePath);
+    imgPix.load(QString("src/images/%1").arg(textDataBase.tick.questions[questNum].imagePath));
     if(!imgPix.isNull()) {
         ui->image_label->setMinimumHeight(this->height()/5);
         ui->image_label->setPixmap(imgPix.scaled( ui->image_label->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        ui->remove_icon_button->setEnabled(true);
     }
+
 }
 
 void MainWindow::removeTicket(int ticketNum)
@@ -127,17 +129,16 @@ void MainWindow::removeTicket(int ticketNum)
     clearLayout(ui->tickets_buttons_scroll_area->layout());
 
     addTicketsButtons();
+
 }
 
-void MainWindow::removeQuest(int questNum, int ticketNum)
+void MainWindow::removeQuest(int questNum)
 {
-    textDataBase.tick.questions.remove(questNum);
+    textDataBase.removeQuestionFile(questNum);
 
     clearLayout(ui->quests_buttons_scroll_area->layout());
 
-    textDataBase.addTicketToFile();
-
-    loadTicket(ticketNum);
+    loadTicket(textDataBase.tick.number);
 }
 
 void MainWindow::resizeEvent(QResizeEvent*)

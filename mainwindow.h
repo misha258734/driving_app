@@ -1,10 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "textdb.h"
+
 #include <QMainWindow>
 #include <QPushButton>
 #include <QFileDialog>
-#include "textdb.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -47,7 +48,7 @@ public:
     void loadTicket(int ticketNum);
     void loadQuestion(int questNum);
     void removeTicket(int ticketNum);
-    void removeQuest(int questNum, int ticketNum);
+    void removeQuest(int questNum);
 
 private slots:
 
@@ -68,17 +69,12 @@ private slots:
     void on_quest_image_button_clicked();
     void on_edit_quest_save_button_clicked();
     void on_add_answer_button_clicked();
-
-
     void on_add_question_button_clicked();
-
     void on_add_ticket_button_clicked();
-
     void on_answers_table_itemSelectionChanged();
-
     void on_answers_table_cellChanged();
-
     void on_remove_answer_button_clicked();
+
 
 private:
     void resizeEvent(QResizeEvent*);

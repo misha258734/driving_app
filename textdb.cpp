@@ -11,6 +11,7 @@ textDB::textDB() {
         ticketDir.mkpath(".");
 
     countTicketFiles();
+    imageDir.refresh();
 }
 
 void textDB::countTicketFiles()
@@ -42,24 +43,26 @@ void textDB::addImages()
 {
     QFile imgFile;
     QString newImgPath;
+    QPixmap pixmap;
 
     for(int i = 0; i < tick.questions.count(); i++) {
         imgFile.setFileName(tick.questions[i].imagePath);
-        imgFile.setFileName(tick.questions[i].imagePath);
         if(tick.questions[i].imagePath != "") {
             if(imgFile.open(QIODevice::ReadOnly)) {
-                newImgPath = QString("src/images/image-%1:%2").arg(tick.number).arg(i+1);
-                QFile::copy(tick.questions[i].imagePath, newImgPath);
+                pixmap.load(tick.questions[i].imagePath);
+                newImgPath = QString("image-%1:%2.png").arg(tick.number).arg(i+1);
+                pixmap.save(QString("src/images/%1").arg(newImgPath), "PNG");
                 tick.questions[i].imagePath = newImgPath;
                 imgFile.close();
             }
         }
     }
+    imageDir.refresh();
 }
 
 int textDB::addTicketToFile()
 {
-    QString filePath = QString("src/tickets/ticket-%1").arg(tick.number);
+    QString filePath = QString("src/tickets/ticket-%1.txt").arg(tick.number);
     if(initializeFile(filePath, QIODevice::WriteOnly | QIODevice::Truncate))
         return 1;
 
@@ -90,7 +93,7 @@ int textDB::loadTicketFromFile(int ticketNum)
     QStringList splitLine;
     question *quest;
 
-    if(initializeFile(QString("src/tickets/ticket-%1").arg(ticketNum), QIODevice::ReadOnly))
+    if(initializeFile(QString("src/tickets/ticket-%1.txt").arg(ticketNum), QIODevice::ReadOnly))
         return 1;
     tick.number = ticketNum;
     tick.questions.clear();
@@ -128,20 +131,49 @@ int textDB::loadTicketFromFile(int ticketNum)
 
 int textDB::removeTicketFile(int ticketNum)
 {
-    if(!ticketDir.remove(QString("ticket-%1").arg(ticketNum)))
+    if(!ticketDir.remove(QString("ticket-%1.txt").arg(ticketNum)))
         return 1;
+    imageDir.refresh();
+    imageDir.setNameFilters(QStringList() << QString("image-%1:*").arg(ticketNum));
+    imageDir.setFilter(QDir::Files);
+    foreach(QString image, imageDir.entryList())
+    {
+        imageDir.remove(image);
+    }
+
     for(int i = ticketNum; i < ticketCount; i++)
     {
-        if(!ticketDir.rename(QString("ticket-%1").arg(i+1), QString("ticket-%1").arg(i)))
+        if(!ticketDir.rename(QString("ticket-%1.txt").arg(i+1), QString("ticket-%1.txt").arg(i)))
             return 2;
+
+        loadTicketFromFile(i);
+        for(int j = 0; j < tick.questions.size(); j++)
+            if(tick.questions[j].imagePath != "") {
+                QString newImgPath = QString("image-%1:%2.png").arg(i).arg(j+1);
+                imageDir.rename(tick.questions[j].imagePath, QString("image-%1:%2").arg(i).arg(j+1));
+                tick.questions[j].imagePath = newImgPath;
+            }
+        addTicketToFile();
     }
+    imageDir.setNameFilters(QStringList() << QString("*"));
+
     countTicketFiles();
     return 0;
 }
 
-int textDB::removeImageFile(int imageNum)
+int textDB::removeQuestionFile(int questNum)
 {
-    if(!ticketDir.remove(QString("ticket-%1").arg(imageNum)))
-        return 1;
+    imageDir.remove(tick.questions[questNum].imagePath);
+
+    tick.questions.remove(questNum);
+
+    for(int i = questNum; i < tick.questions.size(); i++)
+        if(tick.questions[i].imagePath != "") {
+            QString newImgPath = QString("image-%1:%2.png").arg(tick.number).arg(i+1);
+            imageDir.rename(tick.questions[i].imagePath, newImgPath);
+            tick.questions[i].imagePath = newImgPath;
+        }
+    addTicketToFile();
     return 0;
 }
+

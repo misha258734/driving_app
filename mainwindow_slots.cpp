@@ -47,21 +47,26 @@ void MainWindow::on_add_ticket_button_clicked()
 
     textDataBase.addTicketToFile();
 
-    QHBoxLayout* hBox = new QHBoxLayout;
+    clearLayout(ui->tickets_buttons_scroll_area);
 
-    QPushButton *addBtn = new QPushButton("Билет " + QString::number(textDataBase.tick.number));
-    addBtn->setMinimumHeight(50);
-    QObject::connect(addBtn, &QPushButton::clicked,this,[=] {loadTicket(textDataBase.tick.number);});
+    addTicketsButtons();
 
-    QPushButton *removeBtn = new QPushButton("-");
-    removeBtn->setMinimumHeight(50);
-    removeBtn->setMaximumWidth(50);
-    QObject::connect(removeBtn, &QPushButton::clicked,this,[=] {removeTicket(textDataBase.tick.number);});
 
-    hBox->addWidget(addBtn);
-    hBox->addWidget(removeBtn);
+    // QHBoxLayout* hBox = new QHBoxLayout;
 
-    ui->tickets_buttons_scroll_area->addLayout(hBox);
+    // QPushButton *addBtn = new QPushButton("Билет " + QString::number(textDataBase.tick.number));
+    // addBtn->setMinimumHeight(50);
+    // QObject::connect(addBtn, &QPushButton::clicked,this,[=] {loadTicket(textDataBase.tick.number);});
+
+    // QPushButton *removeBtn = new QPushButton("-");
+    // removeBtn->setMinimumHeight(50);
+    // removeBtn->setMaximumWidth(50);
+    // QObject::connect(removeBtn, &QPushButton::clicked,this,[=] {removeTicket(textDataBase.tick.number);});
+
+    // hBox->addWidget(addBtn);
+    // hBox->addWidget(removeBtn);
+
+    // ui->tickets_buttons_scroll_area->addLayout(hBox);
 }
 
 void MainWindow::on_add_question_button_clicked()
@@ -86,7 +91,7 @@ void MainWindow::on_add_question_button_clicked()
     QPushButton *removeBtn = new QPushButton("-");
     removeBtn->setMinimumHeight(50);
     removeBtn->setMaximumWidth(50);
-    QObject::connect(removeBtn, &QPushButton::clicked, this, [=]{removeQuest(questNum-1, textDataBase.tick.number);});
+    QObject::connect(removeBtn, &QPushButton::clicked, this, [=]{removeQuest(questNum-1);});
 
     hBox->addWidget(addBtn);
     hBox->addWidget(removeBtn);
@@ -106,9 +111,10 @@ void MainWindow::on_quest_image_button_clicked()                 // add/change q
     imgPix.load(currentImagePath);
     ui->image_label->setPixmap(imgPix.scaled( ui->image_label->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
+    ui->remove_icon_button->setEnabled(true);
 }
 
-void MainWindow::on_edit_quest_save_button_clicked()             // saves chages to file
+void MainWindow::on_edit_quest_save_button_clicked()             // save chages to file
 {
     textDataBase.tick.questions[current_quest].quest = ui->question_text_textEdit->toPlainText();
     textDataBase.tick.questions[current_quest].comment = ui->comment_text_textEdit->toPlainText();

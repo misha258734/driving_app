@@ -12,15 +12,11 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     mainwindow_slots.cpp \
-    question.cpp \
-    textdb.cpp \
-    ticket.cpp
+    textdb.cpp
 
 HEADERS += \
     mainwindow.h \
-    question.h \
-    textdb.h \
-    ticket.h
+    textdb.h
 
 FORMS += \
     mainwindow.ui

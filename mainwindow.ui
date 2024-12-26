@@ -462,8 +462,8 @@ QPushButton {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>293</width>
-             <height>624</height>
+             <width>127</width>
+             <height>106</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -515,16 +515,10 @@ QPushButton {
       </widget>
       <widget class="QWidget" name="edit_quest_page">
        <layout class="QGridLayout" name="gridLayout_13">
-        <item row="1" column="3">
-         <widget class="QPushButton" name="edit_quest_save_button">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
+        <item row="1" column="2">
+         <widget class="QPushButton" name="edit_quest_back_button">
           <property name="text">
-           <string>Сохранить</string>
-          </property>
-          <property name="flat">
-           <bool>false</bool>
+           <string>Назад</string>
           </property>
          </widget>
         </item>
@@ -569,23 +563,34 @@ QPushButton {
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="quest_image_button">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="autoFillBackground">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>Загрузить изображение</string>
-              </property>
-              <property name="flat">
-               <bool>false</bool>
-              </property>
-             </widget>
+             <layout class="QHBoxLayout" name="horizontalLayout">
+              <item>
+               <widget class="QPushButton" name="quest_image_button">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="autoFillBackground">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>Загрузить изображение</string>
+                </property>
+                <property name="flat">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="remove_icon_button">
+                <property name="text">
+                 <string>Удалить </string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
             <item>
              <widget class="QTextEdit" name="question_text_textEdit">
@@ -746,10 +751,16 @@ li.checked::marker { content: &quot;\2612&quot;; }
           </widget>
          </widget>
         </item>
-        <item row="1" column="2">
-         <widget class="QPushButton" name="edit_quest_back_button">
+        <item row="1" column="3">
+         <widget class="QPushButton" name="edit_quest_save_button">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="text">
-           <string>Назад</string>
+           <string>Сохранить</string>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
           </property>
          </widget>
         </item>

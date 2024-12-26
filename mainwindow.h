@@ -6,6 +6,7 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QFileDialog>
+#include "spoiler.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -21,32 +22,41 @@ class MainWindow : public QMainWindow
     textDB textDataBase;
     QPixmap imgPix;
     QString currentImagePath;
-
-
+    QVBoxLayout *commentLayout;
+    Spoiler *comment;
 
     enum app_pages {
         menu_page = 0,
-        tickets_page = 1,
+        tickets_chose_page = 1,
         ab_tickets_page = 2,
-        edit_tickets_page = 3,
-        edit_quests_page = 4,
+        tickets_page = 3,
+        quests_page = 4,
         edit_quest_page = 5,
         cd_tickets_page = 6,
         timetable_page = 7,
         registration_page = 8,
+        test_page = 9,
     };
 
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void prepareWidgets();
+
     void changePage(int pageNum);
     void clearLayout(QLayout* layout, bool deleteWidgets = true);
-    void addTicketsEditButtons();
-    void loadTicketEdit(int ticketNum);
-    void loadQuestionEdit(int questNum);
+
+    void loadTicketsEdit();
+    void loadQuestionsEdit(int ticketNum);
+    void editQuestion(int questNum);
+
     void removeTicket(int ticketNum);
     void removeQuest(int questNum);
+
+
+    void loadTicketsTest();
+    void loadTest(int ticketNum);
 
 private slots:
 
@@ -56,13 +66,13 @@ private slots:
     void on_goto_ab_tickets_button_clicked();
     void on_goto_cd_tickets_button_clicked();
     void on_registration_back_button_clicked();
-    void on_timetable_back__button_clicked();
-    void on_tickets_back_button_clicked();
+    void on_timetable_back_button_clicked();
+    void on_tickets_chose_back_button_clicked();
     void on_ab_tickets_back_button_clicked();
     void on_cd_tickets_back_button_clicked();
     void on_goto_ab_tickets_edit_button_clicked();
-    void on_edit_quests_back_button_clicked();
-    void on_edit_tickets_back_button_clicked();
+    void on_quests_back_button_clicked();
+    void on_tickets_back_button_clicked();
     void on_edit_quest_back_button_clicked();
     void on_quest_image_button_clicked();
     void on_edit_quest_save_button_clicked();
@@ -73,6 +83,7 @@ private slots:
     void on_answers_table_cellChanged();
     void on_remove_answer_button_clicked();
     void on_remove_image_button_clicked();
+    void on_goto_ab_test_button_clicked();
 
 private:
     void resizeEvent(QResizeEvent*);

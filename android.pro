@@ -12,10 +12,16 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     mainwindow_slots.cpp \
-    textdb.cpp
+    spoiler.cpp \
+    textdb.cpp \
+    tickets_edit.cpp \
+    tickets_edit_slots.cpp \
+    tickets_test.cpp \
+    tickets_test_slots.cpp
 
 HEADERS += \
     mainwindow.h \
+    spoiler.h \
     textdb.h
 
 FORMS += \

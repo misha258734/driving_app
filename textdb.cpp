@@ -23,7 +23,6 @@ void textDB::countTicketFiles()
             ticketCount++;
 }
 
-
 int textDB::initializeFile(QString ticketPath, QIODevice::OpenMode mode)
 {
     ticketFile.close();

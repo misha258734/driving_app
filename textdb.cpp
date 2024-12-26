@@ -161,7 +161,7 @@ int textDB::removeTicketFile(int ticketNum)
     return 0;
 }
 
-int textDB::removeQuestionFile(int questNum)
+void textDB::removeQuestionFile(int questNum)
 {
     imageDir.remove(tick.questions[questNum].imagePath);
 
@@ -174,6 +174,12 @@ int textDB::removeQuestionFile(int questNum)
             tick.questions[i].imagePath = newImgPath;
         }
     addTicketToFile();
-    return 0;
+}
+
+void textDB::removeImage(int questNum)
+{
+    imageDir.remove(tick.questions[questNum].imagePath);
+
+    tick.questions[questNum].imagePath = "";
 }
 

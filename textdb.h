@@ -43,7 +43,8 @@ struct textDB
     int loadTicketFromFile(int ticketNum);
 
     int removeTicketFile(int ticketNum);
-    int removeQuestionFile(int questNum);
+    void removeQuestionFile(int questNum);
+    void removeImage(int questNum);
 };
 
 #endif // TEXTDB_H

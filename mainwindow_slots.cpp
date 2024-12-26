@@ -1,6 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+void MainWindow::resizeEvent(QResizeEvent*)
+{
+    ui->image_label->setMinimumHeight(this->height()/5);
+    if(!imgPix.isNull())
+        ui->image_label->setPixmap(imgPix.scaled( ui->image_label->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+}
 
 void MainWindow::on_goto_tickets_button_clicked() {changePage(tickets_page);}             // menu -> tickets
 void MainWindow::on_goto_timetable_button_clicked() {changePage(timetable_page);}         // menu -> timetable
@@ -13,7 +19,7 @@ void MainWindow::on_tickets_back_button_clicked() {changePage(menu_page);}      
 void MainWindow::on_ab_tickets_back_button_clicked() {changePage(tickets_page);}          // AB tickets -> BACK tickets
 void MainWindow::on_cd_tickets_back_button_clicked() {changePage(tickets_page);}          // CD tickets -> BACK tickets
 void MainWindow::on_goto_ab_tickets_edit_button_clicked() {     // AB tickets -> edit tickets
-    addTicketsButtons();
+    addTicketsEditButtons();
     changePage(edit_tickets_page);
 }
 void MainWindow::on_edit_quests_back_button_clicked() {         // edit quests -> BACK edit tickets
@@ -49,24 +55,7 @@ void MainWindow::on_add_ticket_button_clicked()
 
     clearLayout(ui->tickets_buttons_scroll_area);
 
-    addTicketsButtons();
-
-
-    // QHBoxLayout* hBox = new QHBoxLayout;
-
-    // QPushButton *addBtn = new QPushButton("Билет " + QString::number(textDataBase.tick.number));
-    // addBtn->setMinimumHeight(50);
-    // QObject::connect(addBtn, &QPushButton::clicked,this,[=] {loadTicket(textDataBase.tick.number);});
-
-    // QPushButton *removeBtn = new QPushButton("-");
-    // removeBtn->setMinimumHeight(50);
-    // removeBtn->setMaximumWidth(50);
-    // QObject::connect(removeBtn, &QPushButton::clicked,this,[=] {removeTicket(textDataBase.tick.number);});
-
-    // hBox->addWidget(addBtn);
-    // hBox->addWidget(removeBtn);
-
-    // ui->tickets_buttons_scroll_area->addLayout(hBox);
+    addTicketsEditButtons();
 }
 
 void MainWindow::on_add_question_button_clicked()
@@ -86,7 +75,7 @@ void MainWindow::on_add_question_button_clicked()
     int questNum = textDataBase.tick.questions.count();
     QPushButton *addBtn = new QPushButton("Вопрос " + QString::number(questNum));
     addBtn->setMinimumHeight(50);
-    QObject::connect(addBtn, &QPushButton::clicked, this, [=]{loadQuestion(questNum-1);});
+    QObject::connect(addBtn, &QPushButton::clicked, this, [=]{loadQuestionEdit(questNum-1);});
 
     QPushButton *removeBtn = new QPushButton("-");
     removeBtn->setMinimumHeight(50);
@@ -108,13 +97,16 @@ void MainWindow::on_quest_image_button_clicked()                 // add/change q
     if(currentImagePath == "") return;
 
 
+    ui->image_label->show();
+    ui->remove_image_button->setEnabled(true);
+
     imgPix.load(currentImagePath);
     ui->image_label->setPixmap(imgPix.scaled( ui->image_label->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
-    ui->remove_icon_button->setEnabled(true);
+    ui->remove_image_button->setEnabled(true);
 }
 
-void MainWindow::on_edit_quest_save_button_clicked()             // save chages to file
+void MainWindow::on_edit_quest_save_button_clicked()             // SAVE chages to file
 {
     textDataBase.tick.questions[current_quest].quest = ui->question_text_textEdit->toPlainText();
     textDataBase.tick.questions[current_quest].comment = ui->comment_text_textEdit->toPlainText();
@@ -130,6 +122,9 @@ void MainWindow::on_edit_quest_save_button_clicked()             // save chages 
             textDataBase.tick.questions[current_quest].answer.push_back(answerText);
         }
     }
+
+    if(ui->image_label->isHidden())
+        textDataBase.removeImage(current_quest);
 
     on_edit_quest_back_button_clicked();
 
@@ -164,6 +159,14 @@ void MainWindow::on_answers_table_cellChanged()
 
     on_answers_table_itemSelectionChanged();
 }
+
+void MainWindow::on_remove_image_button_clicked()
+{
+    ui->image_label->clear();
+    ui->image_label->hide();
+    ui->remove_image_button->setEnabled(false);
+}
+
 
 
 

@@ -42,11 +42,9 @@ public:
 
     void changePage(int pageNum);
     void clearLayout(QLayout* layout, bool deleteWidgets = true);
-    void testAdd();
-    void testLoad();
-    void addTicketsButtons();
-    void loadTicket(int ticketNum);
-    void loadQuestion(int questNum);
+    void addTicketsEditButtons();
+    void loadTicketEdit(int ticketNum);
+    void loadQuestionEdit(int questNum);
     void removeTicket(int ticketNum);
     void removeQuest(int questNum);
 
@@ -74,7 +72,7 @@ private slots:
     void on_answers_table_itemSelectionChanged();
     void on_answers_table_cellChanged();
     void on_remove_answer_button_clicked();
-
+    void on_remove_image_button_clicked();
 
 private:
     void resizeEvent(QResizeEvent*);

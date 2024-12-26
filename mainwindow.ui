@@ -555,7 +555,7 @@ QPushButton {
                </size>
               </property>
               <property name="text">
-               <string>Нет изображения</string>
+               <string>Изображение</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -584,7 +584,7 @@ QPushButton {
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="remove_icon_button">
+               <widget class="QPushButton" name="remove_image_button">
                 <property name="text">
                  <string>Удалить </string>
                 </property>

@@ -46,14 +46,14 @@ void MainWindow::clearLayout(QLayout* layout, bool deleteWidgets)
     }
 }
 
-void MainWindow::addTicketsButtons()                        // On edit ticket button
+void MainWindow::addTicketsEditButtons()                        // On edit ticket button
 {
     for(int i = 1; i <= textDataBase.ticketCount; i++) {
         QHBoxLayout* hBox = new QHBoxLayout;
 
         QPushButton *addBtn = new QPushButton("Билет " + QString::number(i));
         addBtn->setMinimumHeight(50);
-        QObject::connect(addBtn, &QPushButton::clicked,this,[=] {loadTicket(i);});
+        QObject::connect(addBtn, &QPushButton::clicked,this,[=] {loadTicketEdit(i);});
 
         QPushButton *removeBtn = new QPushButton("-");
         removeBtn->setMinimumHeight(50);
@@ -66,7 +66,7 @@ void MainWindow::addTicketsButtons()                        // On edit ticket bu
     }
 
 }
-void MainWindow::loadTicket(int ticketNum)                  // On ticket button
+void MainWindow::loadTicketEdit(int ticketNum)                  // On ticket button
 {
     textDataBase.loadTicketFromFile(ticketNum);
 
@@ -75,7 +75,7 @@ void MainWindow::loadTicket(int ticketNum)                  // On ticket button
 
         QPushButton *addBtn = new QPushButton("Вопрос " + QString::number(i+1));
         addBtn->setMinimumHeight(50);
-        QObject::connect(addBtn, &QPushButton::clicked, this, [=]{loadQuestion(i);});
+        QObject::connect(addBtn, &QPushButton::clicked, this, [=]{loadQuestionEdit(i);});
 
         QPushButton *removeBtn = new QPushButton("-");
         removeBtn->setMinimumHeight(50);
@@ -89,7 +89,7 @@ void MainWindow::loadTicket(int ticketNum)                  // On ticket button
 
     changePage(edit_quests_page);
 }
-void MainWindow::loadQuestion(int questNum)                 // On edit question button
+void MainWindow::loadQuestionEdit(int questNum)                 // On edit question button
 {
     current_quest = questNum;
 
@@ -117,7 +117,12 @@ void MainWindow::loadQuestion(int questNum)                 // On edit question 
     if(!imgPix.isNull()) {
         ui->image_label->setMinimumHeight(this->height()/5);
         ui->image_label->setPixmap(imgPix.scaled( ui->image_label->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-        ui->remove_icon_button->setEnabled(true);
+        ui->image_label->show();
+        ui->remove_image_button->setEnabled(true);
+    } else {
+        ui->image_label->clear();
+        ui->image_label->hide();
+        ui->remove_image_button->setEnabled(false);
     }
 
 }
@@ -128,23 +133,14 @@ void MainWindow::removeTicket(int ticketNum)
 
     clearLayout(ui->tickets_buttons_scroll_area->layout());
 
-    addTicketsButtons();
+    addTicketsEditButtons();
 
 }
 
 void MainWindow::removeQuest(int questNum)
 {
     textDataBase.removeQuestionFile(questNum);
-
     clearLayout(ui->quests_buttons_scroll_area->layout());
-
-    loadTicket(textDataBase.tick.number);
-}
-
-void MainWindow::resizeEvent(QResizeEvent*)
-{
-    ui->image_label->setMinimumHeight(this->height()/5);
-    if(!imgPix.isNull())
-        ui->image_label->setPixmap(imgPix.scaled( ui->image_label->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    loadTicketEdit(textDataBase.tick.number);
 }
 

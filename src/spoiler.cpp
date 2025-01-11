@@ -1,6 +1,6 @@
 #include <QPropertyAnimation>
 
-#include "spoiler.h"
+#include "include/spoiler.h"
 
 Spoiler::Spoiler(const QString & title, const int animationDuration, QWidget *parent) : QWidget(parent), animationDuration(animationDuration) {
     toggleButton.setStyleSheet("QToolButton { border: none; }");

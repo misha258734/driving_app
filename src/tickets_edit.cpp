@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "include/mainwindow.h"
 #include "ui_mainwindow.h"
 
 void MainWindow::loadTicketsEdit()                        // On edit ticket button
@@ -26,7 +26,7 @@ void MainWindow::loadQuestionsEdit(int ticketNum)                  // On ticket 
 {
     database.loadTicketFromBase(ticketNum);
 
-    for(int i = 0; i < database.ticket.questions.count(); i++) {
+    for(int i = 0; i < database.tick.questions.count(); i++) {
         QHBoxLayout* hBox = new QHBoxLayout;
 
         QPushButton *addBtn = new QPushButton("Вопрос " + QString::number(i+1));
@@ -48,8 +48,8 @@ void MainWindow::editQuestion(int questNum)                 // On edit question 
 {
     current_quest = questNum;
 
-    QString quest = database.ticket.questions[questNum].quest;
-    QString comm = database.ticket.questions[questNum].comment;
+    QString quest = database.tick.questions[questNum].quest;
+    QString comm = database.tick.questions[questNum].comment;
     if(quest != "")
         ui->question_text_textEdit->setText(quest);
     if(comm != "")
@@ -58,17 +58,17 @@ void MainWindow::editQuestion(int questNum)                 // On edit question 
     ui->answers_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->answers_table->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
     ui->answers_table->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    int answers = database.ticket.questions[questNum].answers.size();
+    int answers = database.tick.questions[questNum].answers.size();
     for(int i = 0; i < answers; i++) {
         ui->answers_table->insertRow(ui->answers_table->rowCount());
-        QString text = database.ticket.questions[questNum].answers[i];
+        QString text = database.tick.questions[questNum].answers[i];
         ui->answers_table->setItem(i, 0, new QTableWidgetItem(text));
     }
     changePage(edit_quest_page);
 
     ui->answers_table->resizeRowsToContents();
 
-    imgPix = database.ticket.questions[current_quest].image;
+    imgPix = database.tick.questions[current_quest].image;
     if(!imgPix.isNull()) {
         ui->image_label->setMinimumHeight(this->height()/5);
         ui->image_label->setPixmap(imgPix.scaled( ui->image_label->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
@@ -93,7 +93,7 @@ void MainWindow::removeTicket(int ticketNum)
 
 void MainWindow::removeQuest(int questNum)
 {
-    database.removeQuestionFromBase(database.ticket.number, questNum);
+    database.removeQuestionFromBase(database.tick.number, questNum);
     clearLayout(ui->quests_buttons_scroll_area->layout());
-    loadQuestionsEdit(database.ticket.number);
+    loadQuestionsEdit(database.tick.number);
 }

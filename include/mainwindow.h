@@ -2,8 +2,8 @@
 #define MAINWINDOW_H
 
 
-#include "spoiler.h"
-#include "appdatabase.h"
+#include "include/spoiler.h"
+#include "include/appdatabase.h"
 
 #include <QMainWindow>
 #include <QPushButton>

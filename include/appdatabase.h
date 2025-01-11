@@ -39,7 +39,7 @@ class appdatabase
     QString databaseName = "ticketsData.sqlite";
 
 public:
-    ticket ticket;
+    ticket tick;
     QVector<int> ticketsNumbersVector;
 
     appdatabase();

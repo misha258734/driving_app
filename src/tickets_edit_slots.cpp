@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "include/mainwindow.h"
 #include "ui_mainwindow.h"
 
 void MainWindow::on_goto_ab_tickets_edit_button_clicked() {     // AB tickets -> edit tickets
@@ -32,12 +32,12 @@ void MainWindow::on_edit_quest_back_button_clicked() {          // edit quest ->
 void MainWindow::on_add_ticket_button_clicked()
 {
     if(database.ticketsNumbersVector.empty())
-        database.ticket.number = 1;
+        database.tick.number = 1;
     else
-        database.ticket.number = database.ticketsNumbersVector.last()+1;
-    database.ticket.questions.clear();
-    database.ticket.errorCounter = 0;
-    database.ticket.lastPass = QDate();
+        database.tick.number = database.ticketsNumbersVector.last()+1;
+    database.tick.questions.clear();
+    database.tick.errorCounter = 0;
+    database.tick.lastPass = QDate();
 
     database.loadTicketToBase();
 
@@ -48,13 +48,13 @@ void MainWindow::on_add_ticket_button_clicked()
 
 void MainWindow::on_add_question_button_clicked()
 {
-    database.ticket.questions.push_back(question());
+    database.tick.questions.push_back(question());
 
     database.loadTicketToBase();
 
     clearLayout(ui->quests_buttons_scroll_area);
 
-    loadQuestionsEdit(database.ticket.number);
+    loadQuestionsEdit(database.tick.number);
 }
 
 void MainWindow::on_quest_image_button_clicked()                 // add/change quest image
@@ -77,23 +77,23 @@ void MainWindow::on_quest_image_button_clicked()                 // add/change q
 
 void MainWindow::on_edit_quest_save_button_clicked()             // SAVE chages to file
 {
-    database.ticket.questions[current_quest].quest = ui->question_text_textEdit->toPlainText();
-    database.ticket.questions[current_quest].comment = ui->comment_text_textEdit->toPlainText();
-    database.ticket.questions[current_quest].image = imgPix;
+    database.tick.questions[current_quest].quest = ui->question_text_textEdit->toPlainText();
+    database.tick.questions[current_quest].comment = ui->comment_text_textEdit->toPlainText();
+    database.tick.questions[current_quest].image = imgPix;
     int rows = ui->answers_table->rowCount();
-    database.ticket.questions[current_quest].answers.clear();
-    database.ticket.questions[current_quest].rightAnswer = ui->answers_table->selectionModel()->currentIndex().row()+1;
+    database.tick.questions[current_quest].answers.clear();
+    database.tick.questions[current_quest].rightAnswer = ui->answers_table->selectionModel()->currentIndex().row()+1;
     for(int i = 0; i < rows; i++) {
         bool itemNotEmpty = ui->answers_table->item(i, 0);
         if(itemNotEmpty)
         {
             QString answerText = ui->answers_table->item(i,0)->text();
-            database.ticket.questions[current_quest].answers.push_back(answerText);
+            database.tick.questions[current_quest].answers.push_back(answerText);
         }
     }
 
     if(ui->image_label->isHidden())
-        database.removeImageFromBase(database.ticket.number, current_quest);
+        database.removeImageFromBase(database.tick.number, current_quest);
 
     on_edit_quest_back_button_clicked();
 

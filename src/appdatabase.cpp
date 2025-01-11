@@ -1,4 +1,4 @@
-#include "appdatabase.h"
+#include "include/appdatabase.h"
 
 appdatabase::appdatabase()
 {
@@ -227,10 +227,10 @@ int appdatabase::insertTicketsQuestions(int id, int tickNum)
 
 int appdatabase::loadTicketToBase()
 {
-    if(insertTicket(ticket.number, ticket.errorCounter, ticket.lastPass.toString("dd.MM.yyyy")))
+    if(insertTicket(tick.number, tick.errorCounter, tick.lastPass.toString("dd.MM.yyyy")))
         return 1;                                           // insert tickets error
 
-    for(auto &quest : ticket.questions) {
+    for(auto &quest : tick.questions) {
         QByteArray imgbArray;
         QBuffer buffer(&imgbArray);
         buffer.open(QIODevice::WriteOnly);
@@ -246,7 +246,7 @@ int appdatabase::loadTicketToBase()
                                   quest.rightAnswer);
         if(quest.id < 0)                                    // insert question error
             return 2;
-        if(insertTicketsQuestions(quest.id, ticket.number)) // insert tickets_questions error
+        if(insertTicketsQuestions(quest.id, tick.number)) // insert tickets_questions error
             return 3;
     }
     return 0;
@@ -263,10 +263,10 @@ int appdatabase::loadTicketFromBase(int ticketNum)
         return 1;
     }
     qry.next();
-    ticket.number = qry.value(0).toInt();
-    ticket.errorCounter = qry.value(1).toInt();
-    ticket.lastPass = QDate::fromString(qry.value(2).toString(), "dd.MM.yyyy");
-    ticket.questions.clear();
+    tick.number = qry.value(0).toInt();
+    tick.errorCounter = qry.value(1).toInt();
+    tick.lastPass = QDate::fromString(qry.value(2).toString(), "dd.MM.yyyy");
+    tick.questions.clear();
 
 
     qry.prepare("SELECT * FROM tickets_questions "
@@ -286,7 +286,7 @@ int appdatabase::loadTicketFromBase(int ticketNum)
         quest.comment = qry.value(6).toString();
         quest.rightAnswer = qry.value(7).toInt();
 
-        ticket.questions.push_back(quest);
+        tick.questions.push_back(quest);
     }
     return 0;
 }
@@ -304,7 +304,7 @@ int appdatabase::removeTicketFromBase(int ticketNum)
         return 1;
     }
 
-    for(auto &i : ticket.questions) {
+    for(auto &i : tick.questions) {
         qry.prepare("DELETE FROM questions WHERE id = :question_id");
         qry.bindValue(":question_id", i.id);
         if(!qry.exec()) {
@@ -329,14 +329,14 @@ int appdatabase::removeQuestionFromBase(int ticketNum, int questNum)
 
     loadTicketFromBase(ticketNum);
     qry.prepare("DELETE FROM questions WHERE id = :question_id");
-    qry.bindValue(":question_id", ticket.questions[questNum].id);
+    qry.bindValue(":question_id", tick.questions[questNum].id);
     if(!qry.exec()) {
         qDebug() << "remove question: " << qry.lastError();
         return 1;
     }
 
     qry.prepare("DELETE FROM tickets_questions WHERE question_id = :question_id");
-    qry.bindValue(":question_id", ticket.questions[questNum].id);
+    qry.bindValue(":question_id", tick.questions[questNum].id);
     if(!qry.exec()) {
         qDebug() << "remove ticket-questions: " << qry.lastError();
         return 2;
@@ -351,7 +351,7 @@ int appdatabase::removeImageFromBase(int ticketNum, int questNum)
 
     loadTicketFromBase(ticketNum);
     qry.prepare("UPDATE questions SET image = 0 WHERE id = :question_id");
-    qry.bindValue(":question_id", ticket.questions[questNum].id);
+    qry.bindValue(":question_id", tick.questions[questNum].id);
     if(!qry.exec()) {
         qDebug() << "remove image: " << qry.lastError();
         return 1;

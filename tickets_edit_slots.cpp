@@ -31,12 +31,15 @@ void MainWindow::on_edit_quest_back_button_clicked() {          // edit quest ->
 
 void MainWindow::on_add_ticket_button_clicked()
 {
-    textDataBase.tick.number = textDataBase.ticketCount+1;
-    textDataBase.tick.questions.clear();
-    textDataBase.tick.errorCounter = 0;
-    textDataBase.tick.lastPass = QDate();
+    if(database.ticketsNumbersVector.empty())
+        database.ticket.number = 1;
+    else
+        database.ticket.number = database.ticketsNumbersVector.last()+1;
+    database.ticket.questions.clear();
+    database.ticket.errorCounter = 0;
+    database.ticket.lastPass = QDate();
 
-    textDataBase.addTicketToFile();
+    database.loadTicketToBase();
 
     clearLayout(ui->tickets_buttons_scroll_area);
 
@@ -45,19 +48,13 @@ void MainWindow::on_add_ticket_button_clicked()
 
 void MainWindow::on_add_question_button_clicked()
 {
-    question *newQuest = new question;
-    newQuest->quest = "";
-    newQuest->comment = "";
-    newQuest->imagePath = "";
-    newQuest->rightAnswer = -1;
+    database.ticket.questions.push_back(question());
 
-    textDataBase.tick.questions.push_back(*newQuest);
-
-    textDataBase.addTicketToFile();
+    database.loadTicketToBase();
 
     clearLayout(ui->quests_buttons_scroll_area);
 
-    loadQuestionsEdit(textDataBase.tick.number);
+    loadQuestionsEdit(database.ticket.number);
 }
 
 void MainWindow::on_quest_image_button_clicked()                 // add/change quest image
@@ -80,27 +77,27 @@ void MainWindow::on_quest_image_button_clicked()                 // add/change q
 
 void MainWindow::on_edit_quest_save_button_clicked()             // SAVE chages to file
 {
-    textDataBase.tick.questions[current_quest].quest = ui->question_text_textEdit->toPlainText();
-    textDataBase.tick.questions[current_quest].comment = ui->comment_text_textEdit->toPlainText();
-    textDataBase.tick.questions[current_quest].imagePath = currentImagePath;
+    database.ticket.questions[current_quest].quest = ui->question_text_textEdit->toPlainText();
+    database.ticket.questions[current_quest].comment = ui->comment_text_textEdit->toPlainText();
+    database.ticket.questions[current_quest].image = imgPix;
     int rows = ui->answers_table->rowCount();
-    textDataBase.tick.questions[current_quest].answer.clear();
-    textDataBase.tick.questions[current_quest].rightAnswer = ui->answers_table->selectionModel()->currentIndex().row()+1;
+    database.ticket.questions[current_quest].answers.clear();
+    database.ticket.questions[current_quest].rightAnswer = ui->answers_table->selectionModel()->currentIndex().row()+1;
     for(int i = 0; i < rows; i++) {
         bool itemNotEmpty = ui->answers_table->item(i, 0);
         if(itemNotEmpty)
         {
             QString answerText = ui->answers_table->item(i,0)->text();
-            textDataBase.tick.questions[current_quest].answer.push_back(answerText);
+            database.ticket.questions[current_quest].answers.push_back(answerText);
         }
     }
 
     if(ui->image_label->isHidden())
-        textDataBase.removeImage(current_quest);
+        database.removeImageFromBase(database.ticket.number, current_quest);
 
     on_edit_quest_back_button_clicked();
 
-    textDataBase.addTicketToFile();
+    database.loadTicketToBase();
 }
 
 void MainWindow::on_add_answer_button_clicked()                  // on selection cell in answers table

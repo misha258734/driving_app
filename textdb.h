@@ -8,7 +8,7 @@ struct question
 {
     QString imagePath;
     QString quest;
-    QVector<QString> answer;
+    QStringList answers;
     int rightAnswer;
     QString comment;
 };

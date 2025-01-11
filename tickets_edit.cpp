@@ -3,17 +3,19 @@
 
 void MainWindow::loadTicketsEdit()                        // On edit ticket button
 {
-    for(int i = 1; i <= textDataBase.ticketCount; i++) {
+    for(int i = 0; i < database.ticketsNumbersVector.size(); i++) {
+        int ticketNum = database.ticketsNumbersVector[i];
+
         QHBoxLayout* hBox = new QHBoxLayout;
 
-        QPushButton *addBtn = new QPushButton("Билет " + QString::number(i));
+        QPushButton *addBtn = new QPushButton("Билет " + QString::number(i+1));
         addBtn->setMinimumHeight(50);
-        QObject::connect(addBtn, &QPushButton::clicked,this,[=] {loadQuestionsEdit(i);});
+        QObject::connect(addBtn, &QPushButton::clicked,this,[=] {loadQuestionsEdit(ticketNum);});
 
         QPushButton *removeBtn = new QPushButton("-");
         removeBtn->setMinimumHeight(50);
         removeBtn->setMaximumWidth(50);
-        QObject::connect(removeBtn, &QPushButton::clicked,this,[=] {removeTicket(i);});
+        QObject::connect(removeBtn, &QPushButton::clicked,this,[=] {removeTicket(ticketNum);});
 
         hBox->addWidget(addBtn);
         hBox->addWidget(removeBtn);
@@ -22,9 +24,9 @@ void MainWindow::loadTicketsEdit()                        // On edit ticket butt
 }
 void MainWindow::loadQuestionsEdit(int ticketNum)                  // On ticket button
 {
-    textDataBase.loadTicketFromFile(ticketNum);
+    database.loadTicketFromBase(ticketNum);
 
-    for(int i = 0; i < textDataBase.tick.questions.count(); i++) {
+    for(int i = 0; i < database.ticket.questions.count(); i++) {
         QHBoxLayout* hBox = new QHBoxLayout;
 
         QPushButton *addBtn = new QPushButton("Вопрос " + QString::number(i+1));
@@ -40,15 +42,14 @@ void MainWindow::loadQuestionsEdit(int ticketNum)                  // On ticket 
         hBox->addWidget(removeBtn);
         ui->quests_buttons_scroll_area->addLayout(hBox);
     }
-
     changePage(quests_page);
 }
 void MainWindow::editQuestion(int questNum)                 // On edit question button
 {
     current_quest = questNum;
 
-    QString quest = textDataBase.tick.questions[questNum].quest;
-    QString comm = textDataBase.tick.questions[questNum].comment;
+    QString quest = database.ticket.questions[questNum].quest;
+    QString comm = database.ticket.questions[questNum].comment;
     if(quest != "")
         ui->question_text_textEdit->setText(quest);
     if(comm != "")
@@ -57,17 +58,17 @@ void MainWindow::editQuestion(int questNum)                 // On edit question 
     ui->answers_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->answers_table->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
     ui->answers_table->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    int answers = textDataBase.tick.questions[questNum].answer.size();
+    int answers = database.ticket.questions[questNum].answers.size();
     for(int i = 0; i < answers; i++) {
         ui->answers_table->insertRow(ui->answers_table->rowCount());
-        QString text = textDataBase.tick.questions[questNum].answer[i];
+        QString text = database.ticket.questions[questNum].answers[i];
         ui->answers_table->setItem(i, 0, new QTableWidgetItem(text));
     }
     changePage(edit_quest_page);
 
     ui->answers_table->resizeRowsToContents();
 
-    imgPix.load(QString("src/images/%1").arg(textDataBase.tick.questions[questNum].imagePath));
+    imgPix = database.ticket.questions[current_quest].image;
     if(!imgPix.isNull()) {
         ui->image_label->setMinimumHeight(this->height()/5);
         ui->image_label->setPixmap(imgPix.scaled( ui->image_label->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
@@ -78,12 +79,11 @@ void MainWindow::editQuestion(int questNum)                 // On edit question 
         ui->image_label->hide();
         ui->remove_image_button->setEnabled(false);
     }
-
 }
 
 void MainWindow::removeTicket(int ticketNum)
 {
-    if(textDataBase.removeTicketFile(ticketNum)) return;
+    if(database.removeTicketFromBase(ticketNum)) return;
 
     clearLayout(ui->tickets_buttons_scroll_area->layout());
 
@@ -93,7 +93,7 @@ void MainWindow::removeTicket(int ticketNum)
 
 void MainWindow::removeQuest(int questNum)
 {
-    textDataBase.removeQuestionFile(questNum);
+    database.removeQuestionFromBase(database.ticket.number, questNum);
     clearLayout(ui->quests_buttons_scroll_area->layout());
-    loadQuestionsEdit(textDataBase.tick.number);
+    loadQuestionsEdit(database.ticket.number);
 }

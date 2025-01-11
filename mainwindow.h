@@ -1,12 +1,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "textdb.h"
+
+#include "spoiler.h"
+#include "appdatabase.h"
 
 #include <QMainWindow>
 #include <QPushButton>
 #include <QFileDialog>
-#include "spoiler.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,7 +20,8 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
     int current_quest;
-    textDB textDataBase;
+    //textDB textDataBase;
+    appdatabase database;
     QPixmap imgPix;
     QString currentImagePath;
     QVBoxLayout *commentLayout;
@@ -42,21 +44,6 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void prepareWidgets();
-
-    void changePage(int pageNum);
-    void clearLayout(QLayout* layout, bool deleteWidgets = true);
-
-    void loadTicketsEdit();
-    void loadQuestionsEdit(int ticketNum);
-    void editQuestion(int questNum);
-
-    void removeTicket(int ticketNum);
-    void removeQuest(int questNum);
-
-
-    void loadTicketsTest();
-    void loadTest(int ticketNum);
 
 private slots:
 
@@ -67,7 +54,7 @@ private slots:
     void on_goto_cd_tickets_button_clicked();
     void on_registration_back_button_clicked();
     void on_timetable_back_button_clicked();
-    void on_tickets_chose_back_button_clicked();
+    void on_ticket_chose_back_button_clicked();
     void on_ab_tickets_back_button_clicked();
     void on_cd_tickets_back_button_clicked();
     void on_goto_ab_tickets_edit_button_clicked();
@@ -85,7 +72,24 @@ private slots:
     void on_remove_image_button_clicked();
     void on_goto_ab_test_button_clicked();
 
+
 private:
+    void prepareWidgets();
+
+    void changePage(int pageNum);
+    void clearLayout(QLayout* layout, bool deleteWidgets = true);
+
+    void loadTicketsEdit();
+    void loadQuestionsEdit(int ticketNum);
+    void editQuestion(int questNum);
+
+    void removeTicket(int ticketNum);
+    void removeQuest(int questNum);
+
+
+    void loadTicketsTest();
+    void loadTest(int ticketNum);
+
     void resizeEvent(QResizeEvent*);
 
     Ui::MainWindow *ui;

@@ -15,7 +15,7 @@ void MainWindow::on_goto_ab_tickets_button_clicked() {changePage(ab_tickets_page
 void MainWindow::on_goto_cd_tickets_button_clicked() {changePage(cd_tickets_page);}       // tickets -> CD tickets
 void MainWindow::on_registration_back_button_clicked() {changePage(menu_page);}           // registration -> BACK menu
 void MainWindow::on_timetable_back_button_clicked() {changePage(menu_page);}             // timetable -> BACK menu
-void MainWindow::on_tickets_chose_back_button_clicked() {changePage(menu_page);}                // tickets -> BACK menu
+void MainWindow::on_ticket_chose_back_button_clicked() {changePage(menu_page);}                // tickets -> BACK menu
 void MainWindow::on_ab_tickets_back_button_clicked() {changePage(tickets_chose_page);}          // AB tickets -> BACK tickets
 void MainWindow::on_cd_tickets_back_button_clicked() {changePage(tickets_chose_page);}          // CD tickets -> BACK tickets
 

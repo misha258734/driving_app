@@ -76,7 +76,7 @@ int textDB::addTicketToFile()
     out << QString::number(tick.errorCounter) + '\t' + lastDate + '\n';
     for(question &i : tick.questions) {
         out << i.quest + '\t' + QString::number(i.rightAnswer) + '\t' + i.imagePath + '\t' + i.comment + '\n';
-        for(QString &j : i.answer)
+        for(QString &j : i.answers)
             out << '\t' + j + '\n';
         out << "###\n";
     }
@@ -120,7 +120,7 @@ int textDB::loadTicketFromFile(int ticketNum)
         quest->imagePath = splitLine[2];
         quest->comment = splitLine[3];
         while((textLine = out.readLine()) != "###") {
-            quest->answer.push_back(textLine.remove(0, 1));
+            quest->answers.push_back(textLine.remove(0, 1));
         }
         tick.questions.push_back(*quest);
     }

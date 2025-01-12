@@ -30,7 +30,7 @@ class MainWindow : public QMainWindow
     QVBoxLayout *commentLayout;
     Spoiler *comment;
     QTimer *timer;
-    int time;
+    int minutes, seconds;
 
     enum app_pages {
         menu_page = 0,
@@ -43,6 +43,7 @@ class MainWindow : public QMainWindow
         timetable_page = 7,
         registration_page = 8,
         test_page = 9,
+        test_results_page =10
     };
 
 public:
@@ -84,6 +85,8 @@ private slots:
 
     void timer_slot();
 
+    void on_test_answer_button_clicked();
+
 private:
     void prepareWidgets();
     void resizeScrollArea(QAbstractScrollArea *area);
@@ -102,6 +105,7 @@ private:
     void loadTicketsTest();
     void loadTest(int ticketNum, int questionNum);
     void loadResults();
+    void stopTest();
 
 
     Ui::MainWindow *ui;

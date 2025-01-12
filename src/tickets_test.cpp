@@ -11,9 +11,13 @@ void MainWindow::loadTicketsTest()                        // On edit ticket butt
         QPushButton *addBtn = new QPushButton("Билет " + QString::number(i+1));
         addBtn->setMinimumHeight(50);
         QObject::connect(addBtn, &QPushButton::clicked,this,[=] {
-            loadTest(ticketNum, 0);
-            time = 200;
+            seconds = 0;
+            minutes = 20;
             timer->start(1000);
+            ui->test_answer_button->show();
+            ui->goto_next_quest_button->hide();
+            ui->test_comment_frame->hide();
+            loadTest(ticketNum, 0);
         });
 
         hBox->addWidget(addBtn);
@@ -27,6 +31,7 @@ void MainWindow::loadTest(int ticketNum, int questionNum)
     currentTestTicket = ticketNum;
     ui->progressBar->setValue((double)questionNum/database.tick.questions.size()*100);
 
+    ui->test_answers_table->setRowCount(0);
     ui->test_quest_label->setText(database.tick.questions[questionNum].quest);
     ui->test_comment_label->setText(database.tick.questions[questionNum].comment);
     ui->test_answers_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
@@ -39,6 +44,7 @@ void MainWindow::loadTest(int ticketNum, int questionNum)
         ui->test_answers_table->setItem(i, 0, new QTableWidgetItem(text));
     }
     ui->test_answers_table->resizeRowsToContents();
+    ui->test_answers_table->setMinimumWidth(ui->test_quest_label->width());
     changePage(test_page);
     imgPix = database.tick.questions[questionNum].image;
     if(!imgPix.isNull()) {
@@ -51,7 +57,12 @@ void MainWindow::loadTest(int ticketNum, int questionNum)
     }
 }
 
+void MainWindow::stopTest()
+{
+    loadResults();
+}
+
 void MainWindow::loadResults()
 {
-
+    changePage(test_results_page);
 }

@@ -345,19 +345,6 @@ int appdatabase::removeQuestionFromBase(int ticketNum, int questNum)
     return 0;
 }
 
-int appdatabase::removeImageFromBase(int ticketNum, int questNum)
-{
-    QSqlQuery qry;
-
-    loadTicketFromBase(ticketNum);
-    qry.prepare("UPDATE questions SET image = 0 WHERE id = :question_id");
-    qry.bindValue(":question_id", tick.questions[questNum].id);
-    if(!qry.exec()) {
-        qDebug() << "remove image: " << qry.lastError();
-        return 1;
-    }
-    return 0;
-}
 
 QStringList JSONArrayToStringList(QString jsonArray)
 {

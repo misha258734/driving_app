@@ -81,8 +81,8 @@ void MainWindow::on_edit_quest_save_button_clicked()             // SAVE chages 
     database.tick.questions[current_quest].comment = ui->comment_text_textEdit->toPlainText();
     database.tick.questions[current_quest].image = imgPix;
     int rows = ui->answers_table->rowCount();
-    database.tick.questions[current_quest].answers.clear();
     database.tick.questions[current_quest].rightAnswer = ui->answers_table->selectionModel()->currentIndex().row()+1;
+    database.tick.questions[current_quest].answers.clear();
     for(int i = 0; i < rows; i++) {
         bool itemNotEmpty = ui->answers_table->item(i, 0);
         if(itemNotEmpty)
@@ -93,7 +93,7 @@ void MainWindow::on_edit_quest_save_button_clicked()             // SAVE chages 
     }
 
     if(ui->image_label->isHidden())
-        database.removeImageFromBase(database.tick.number, current_quest);
+        database.tick.questions[current_quest].image = QPixmap();
 
     on_edit_quest_back_button_clicked();
 
@@ -103,6 +103,7 @@ void MainWindow::on_edit_quest_save_button_clicked()             // SAVE chages 
 void MainWindow::on_add_answer_button_clicked()                  // on selection cell in answers table
 {
     ui->answers_table->insertRow(ui->answers_table->rowCount());
+    resizeScrollArea(ui->answers_table);
 }
 
 void MainWindow::on_remove_answer_button_clicked()
@@ -135,3 +136,18 @@ void MainWindow::on_remove_image_button_clicked()
     ui->image_label->hide();
     ui->remove_image_button->setEnabled(false);
 }
+
+
+void MainWindow::on_question_text_textEdit_textChanged()
+{
+    resizeScrollArea(ui->question_text_textEdit);
+}
+void MainWindow::on_answers_table_cellChanged(int, int)
+{
+    resizeScrollArea(ui->answers_table);
+}
+void MainWindow::on_comment_text_textEdit_textChanged()
+{
+    resizeScrollArea(ui->comment_text_textEdit);
+}
+

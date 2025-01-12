@@ -49,8 +49,6 @@ public:
 
     int removeTicketFromBase(int ticketNum);
     int removeQuestionFromBase(int ticketNum, int questNum);
-    int removeImageFromBase(int ticketNum, int questNum);
-
 private:
     void initializeDatabase(QString DBName);
     void fillTicketsNumbersVector();

@@ -8,6 +8,7 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QFileDialog>
+#include <QScrollBar>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -71,11 +72,15 @@ private slots:
     void on_remove_answer_button_clicked();
     void on_remove_image_button_clicked();
     void on_goto_ab_test_button_clicked();
-
+    void on_test_back_button_clicked();
+    void on_question_text_textEdit_textChanged();
+    void on_answers_table_cellChanged(int, int);
+    void on_comment_text_textEdit_textChanged();
 
 private:
     void prepareWidgets();
-
+    void resizeScrollArea(QAbstractScrollArea *area);
+    void resizeEvent(QResizeEvent*);
     void changePage(int pageNum);
     void clearLayout(QLayout* layout, bool deleteWidgets = true);
 
@@ -90,7 +95,7 @@ private:
     void loadTicketsTest();
     void loadTest(int ticketNum);
 
-    void resizeEvent(QResizeEvent*);
+
 
     Ui::MainWindow *ui;
 };

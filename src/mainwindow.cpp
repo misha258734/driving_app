@@ -36,9 +36,12 @@ void MainWindow::prepareWidgets()
     changePage(menu_page);
 }
 
-void MainWindow::changePage(int pageNum)
+void MainWindow::resizeScrollArea(QAbstractScrollArea *area)
 {
-    ui->app_stacked_widget->setCurrentIndex(pageNum);
+    area->setFixedHeight(50);
+    while(area->verticalScrollBar()->isVisible()) {
+        area->setFixedHeight(area->height() + 10);
+    }
 }
 
 void MainWindow::clearLayout(QLayout* layout, bool deleteWidgets)
@@ -55,5 +58,18 @@ void MainWindow::clearLayout(QLayout* layout, bool deleteWidgets)
         delete item;
     }
 }
+void MainWindow::resizeEvent(QResizeEvent*)
+{
+    ui->image_label->setMinimumHeight(this->height()/5);
+    if(!imgPix.isNull())
+        ui->image_label->setPixmap(imgPix.scaled( ui->image_label->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+}
+
+void MainWindow::changePage(int pageNum)
+{
+    ui->app_stacked_widget->setCurrentIndex(pageNum);
+}
+
+
 
 

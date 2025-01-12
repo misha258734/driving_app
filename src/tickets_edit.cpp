@@ -84,11 +84,8 @@ void MainWindow::editQuestion(int questNum)                 // On edit question 
 void MainWindow::removeTicket(int ticketNum)
 {
     if(database.removeTicketFromBase(ticketNum)) return;
-
     clearLayout(ui->tickets_buttons_scroll_area->layout());
-
     loadTicketsEdit();
-
 }
 
 void MainWindow::removeQuest(int questNum)

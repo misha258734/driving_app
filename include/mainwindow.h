@@ -9,6 +9,7 @@
 #include <QPushButton>
 #include <QFileDialog>
 #include <QScrollBar>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -21,12 +22,15 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
     int current_quest;
+    int currentTestTicket, currentTestQuestion = 0;
     //textDB textDataBase;
     appdatabase database;
     QPixmap imgPix;
     QString currentImagePath;
     QVBoxLayout *commentLayout;
     Spoiler *comment;
+    QTimer *timer;
+    int time;
 
     enum app_pages {
         menu_page = 0,
@@ -76,6 +80,9 @@ private slots:
     void on_question_text_textEdit_textChanged();
     void on_answers_table_cellChanged(int, int);
     void on_comment_text_textEdit_textChanged();
+    void on_goto_next_quest_button_clicked();
+
+    void timer_slot();
 
 private:
     void prepareWidgets();
@@ -93,8 +100,8 @@ private:
 
 
     void loadTicketsTest();
-    void loadTest(int ticketNum);
-
+    void loadTest(int ticketNum, int questionNum);
+    void loadResults();
 
 
     Ui::MainWindow *ui;

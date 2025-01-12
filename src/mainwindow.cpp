@@ -1,11 +1,18 @@
 #include "include/mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QBoxLayout>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    currentTestQuestion = 0;
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(timer_slot()));
+
     prepareWidgets();
 }
 
@@ -23,16 +30,19 @@ void MainWindow::prepareWidgets()
     ui->goto_cd_errors_button->setDisabled(true);
     ui->registration_confirm_button->setDisabled(true);
 
-    commentLayout = new QVBoxLayout();
-    QLabel *lbl = new QLabel;
-    lbl->setText("afasdfas312312AF Af");
-    lbl->sizePolicy().setVerticalPolicy(QSizePolicy::Expanding);
-    comment = new Spoiler("Комментарий");
-    comment->setContentLayout(*commentLayout);
-    comment->layout()->addWidget(lbl);
-    ui->test_scroll_area->layout()->addWidget(comment);
+    // commentLayout = new QVBoxLayout();
+    // QLabel *lbl = new QLabel;
+    // lbl->setText("afasdfas312312AF Af");
+    // lbl->sizePolicy().setVerticalPolicy(QSizePolicy::Expanding);
+    // comment = new Spoiler("Комментарий");
+    // comment->setContentLayout(*commentLayout);
+    // comment->layout()->addWidget(lbl);
+    // ui->test_scroll_area->layout()->addWidget(comment);
+    // comment->sizePolicy().setVerticalPolicy(QSizePolicy::Expanding);
+    // QSpacerItem *spcr = new QSpacerItem(1,1, QSizePolicy::Fixed, QSizePolicy::Expanding);
+    // ui->test_scroll_area->layout()->addItem(spcr);
 
-    comment->sizePolicy().setVerticalPolicy(QSizePolicy::Expanding);
+
     changePage(menu_page);
 }
 
@@ -69,7 +79,5 @@ void MainWindow::changePage(int pageNum)
 {
     ui->app_stacked_widget->setCurrentIndex(pageNum);
 }
-
-
 
 

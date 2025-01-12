@@ -9,6 +9,7 @@ Spoiler::Spoiler(const QString & title, const int animationDuration, QWidget *pa
     toggleButton.setText(title);
     toggleButton.setCheckable(true);
     toggleButton.setChecked(false);
+    toggleButton.setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
 
     headerLine.setFrameShape(QFrame::HLine);
     headerLine.setFrameShadow(QFrame::Sunken);
